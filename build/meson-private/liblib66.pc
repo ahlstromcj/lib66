@@ -1,0 +1,10 @@
+prefix=/usr/local
+includedir=${prefix}/include
+libdir=${prefix}/lib
+
+Name: lib66-1.0
+Description: Common "66" header files.
+URL: https://github.com/ahlstromcj/lib66
+Version: 1.0
+Libs: -L${prefix}/lib/lib66-1.0 -llib66-1.0
+Cflags: -I${includedir}/lib66-1.0

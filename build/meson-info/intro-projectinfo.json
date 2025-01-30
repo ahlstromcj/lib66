@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "descriptive_name": "lib66",
+  "license": [
+    "GPLv3"
+  ],
+  "license_files": [],
+  "subproject_dir": "subprojects",
+  "subprojects": []
+}

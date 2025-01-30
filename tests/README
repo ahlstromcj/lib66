@@ -1,0 +1,8 @@
+Tests Directory for the Lib66 Library Header Files
+Chris Ahlstrom
+2025-01-30 to 2025-01-30
+
+This directory is where all test products will reside.  See build/README for
+more information.
+
+# vim: sw=4 ts=4 wm=8 et ft=sh

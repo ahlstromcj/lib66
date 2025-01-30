@@ -1,0 +1,21 @@
+[
+  {
+    "cmd": [
+      "/home/ahlstrom/Home/ca/mls/git/lib66/build/tests/platform_macros"
+    ],
+    "env": {},
+    "name": "C++ Platform Macros",
+    "workdir": null,
+    "timeout": 30,
+    "suite": [
+      "lib66"
+    ],
+    "is_parallel": true,
+    "priority": 0,
+    "protocol": "exitcode",
+    "depends": [
+      "59830eb@@platform_macros@exe"
+    ],
+    "extra_paths": []
+  }
+]

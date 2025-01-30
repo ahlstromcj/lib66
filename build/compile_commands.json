@@ -1,0 +1,14 @@
+[
+  {
+    "directory": "/home/ahlstrom/Home/ca/mls/git/lib66/build",
+    "command": "ccache c++ -Iliblib66-1.0.a.p -I. -I.. -Iinclude -I../include -fdiagnostics-color=always -D_GLIBCXX_ASSERTIONS=1 -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wextra -Wpedantic -std=c++14 -O0 -g -DDEBUG -fPIC '-DLIB66_NAME=\"lib66\"' '-DLIB66_VERSION=\"1.0\"' -MD -MQ liblib66-1.0.a.p/src_lib66.cpp.o -MF liblib66-1.0.a.p/src_lib66.cpp.o.d -o liblib66-1.0.a.p/src_lib66.cpp.o -c ../src/lib66.cpp",
+    "file": "../src/lib66.cpp",
+    "output": "liblib66-1.0.a.p/src_lib66.cpp.o"
+  },
+  {
+    "directory": "/home/ahlstrom/Home/ca/mls/git/lib66/build",
+    "command": "ccache c++ -Itests/platform_macros.p -Itests -I../tests -I. -I.. -Iinclude -I../include -fdiagnostics-color=always -D_GLIBCXX_ASSERTIONS=1 -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wextra -Wpedantic -std=c++14 -O0 -g -DDEBUG -MD -MQ tests/platform_macros.p/platform_macros.cpp.o -MF tests/platform_macros.p/platform_macros.cpp.o.d -o tests/platform_macros.p/platform_macros.cpp.o -c ../tests/platform_macros.cpp",
+    "file": "../tests/platform_macros.cpp",
+    "output": "tests/platform_macros.p/platform_macros.cpp.o"
+  }
+]

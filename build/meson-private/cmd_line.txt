@@ -1,0 +1,6 @@
+[options]
+buildtype = debug
+default_library = static
+
+[properties]
+

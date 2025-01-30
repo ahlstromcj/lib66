@@ -1,0 +1,11 @@
+prefix=/home/ahlstrom/Home/ca/mls/git/lib66/build
+includedir=${prefix}/include
+libdir=${prefix}/lib
+srcdir=/home/ahlstrom/Home/ca/mls/git/lib66
+
+Name: lib66-1.0
+Description: Common "66" header files.
+URL: https://github.com/ahlstromcj/lib66
+Version: 1.0
+Libs: -L${prefix} -llib66-1.0
+Cflags: -I${prefix} -I${srcdir} -I${prefix}/include -I${srcdir}/include -I${prefix} -I${srcdir}
