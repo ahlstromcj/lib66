@@ -1,14 +1,8 @@
-# README for Library Lib66 0.1 2025-01-30
+# README for Library Lib66 1.0 2025-01-31
 
-__Lib66__ is a Non/New Session Manager support library based on the code
-in the __Seq66__ project, but that is useful in other applications.
-It provides more elegant methods in many cases. It is a work in
-progress and the precursor to a potential Seq66 version 2.
-
-Support sites (still in progress):
-
-    *   https://ahlstromcj.github.io/
-    *   https://github.com/ahlstromcj/ahlstromcj.github.io/wiki
+__Lib66__ is a headers-only support library based on the code
+in the other "66" projects, but that is useful in other applications.
+It also is meant to be a subproject of the "66" projects.
 
 # Major Features
 
