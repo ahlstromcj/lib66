@@ -29,6 +29,50 @@
 #  This project is meant to provide common header files for all of the
 #  "xxx66" libraries projects (except for "seq66" version 1).
 #
+#  The Pitchfork Layout (C++)
+#
+#     https://github.com/vector-of-bool/pitchfork
+#     http://www.max-sperling.bplaced.net/?p=10296
+#
+#  Top-level directories:
+#
+#     build    ... Build artifacts. (Not part of the repo.)
+#     data     ... Non-source files, like INI files.
+#     docs     ... Documentation.
+#     examples ... Samples and the examples.
+#     external ... Used external projects.
+#     extras   ... Submodules not build by default.
+#     include  ... Public headers.
+#     libs     ... Submodules build by default.
+#     src      ... Source files and the private headers.
+#     tests    ... Tests cases.
+#     tools    ... Development utilities.
+#
+#  The "Separated" layout:
+#
+#     <root>/
+#        include/
+#           <namespace_0>/
+#              .../
+#                 <namespace_X>/
+#                    <class>.hpp
+#        src/
+#           <namespace_0>/
+#              .../
+#                 <namespace_X>/
+#                    <class>.cpp
+#        tests/
+#           <namespace_0>/
+#              .../
+#                 <namespace_X>/
+#                    <class>.cpp
+#
+#  We use this layout, usually with just one level of nesting, but
+#  occasionaly more (see the rtl66 project layout). Also, there might
+#  be more that one "test" application.
+#
+#  Also see the spec.bs file in the "extras" directory.
+# 
 #-----------------------------------------------------------------------------
 
 project('lib66',
