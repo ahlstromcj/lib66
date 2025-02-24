@@ -27,7 +27,7 @@
  * \library       Any application or library
  * \author        Chris Ahlstrom and other authors; see documentation
  * \date          2025-01-30
- * \updates       20225-01-30
+ * \updates       2025-02-04
  * \license       GNU GPL v2 or above
  *
  *  This file defines a minimal set of convenience macros for both C and C++11
@@ -134,87 +134,6 @@ typedef enum
 #define true     1
 
 #endif          // __cplusplus
-
-#if 0           // also defined in platform_macros.h
-
-/**
- *    This macro tests the integer value against a success return value (i.e.
- *    zero).
- *
- *    Other related macros are:
- *
- *       -  is_posix_success()
- *       -  is_posix_error()
- *       -  not_posix_success()
- *       -  not_posix_error()
- *       -  set_posix_success()
- *       -  set_posix_error()
- *
- * \note
- *      -   These macros are also defined in platform_macros.h.
- *      -   Some functions return values other than error (-1)
- *          when an error occurs.
- *      -   Some functions return values other than success (0)
- *          when the function succeeds.
- *      -   Please refer to the online documentation for these quixotic
- *          functions, and decide which macro one want to use for the test, if
- *          any.
- *      -   In some case, one might want to use a clearer test.  For example,
- *          the socket functions return a result that is
- *          PLATFORM_POSIX_ERROR (-1) if the function fails, but
- *          non-zero integer values are returned if the function succeeds.
- *          For these functions, the is_valid_socket() and not_valid_socket()
- *          macros are much more appropriate to use.
- *
- *//*-------------------------------------------------------------------------*/
-
-#if ! defined is_posix_success
-#define is_posix_success(x)      ((x) == 0)
-#endif
-
-/**
- *  This macro tests the integer value against (-1).
- */
-
-#if ! defined is_posix_error
-#define is_posix_error(x)        ((x) == (-1))
-#endif
-
-/**
- *  This macro tests the integer value against (0).
- */
-
-#if ! defined not_posix_success
-#define not_posix_success(x)     ((x) != 0)
-#endif
-
-/**
- *  This macro tests the integer value against (-1).
- */
-
-#if ! defined not_posix_error
-#define not_posix_error(x)       ((x) != (-1))
-#endif
-
-/**
- *  This macro set the integer value to "success" (0).  The
- *  parameter must be an lvalue, as the assignment operator is used.
- */
-
-#if ! defined set_posix_success
-#define set_posix_success(x)     ((x) = 0)
-#endif
-
-/**
- *  This macro set the integer value to "error" (-1).  The
- *  parameter must be an lvalue, as the assignment operator is used.
- */
-
-#if ! defined set_posix_error
-#define set_posix_error(x)       ((x) = (-1))
-#endif
-
-#endif  // 0
 
 /**
  *    GCC provides three magic variables which hold the name of the current
