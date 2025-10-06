@@ -27,7 +27,7 @@
  * \library       Any application or library
  * \author        Chris Ahlstrom
  * \date          2015-07-24
- * \updates       2025-01-30
+ * \updates       2025-03-26
  * \license       GNU GPLv2 or above
  *
  *  Copyright (C) 2013-2025 Chris Ahlstrom <ahlstromcj@gmail.com>
@@ -78,6 +78,7 @@
  *       -  PLATFORM_CPP_11
  *       -  PLATFORM_CPP_14
  *       -  PLATFORM_CPP_17
+ *       -  PLATFORM_CPP_20
  *    -  Other:
  *       -  PLATFORM_POSIX_ERROR
  *       -  PLATFORM_POSIX_SUCCESS
@@ -102,6 +103,8 @@
  *    For the 2017 standard, it's defined as 201703L, interpreted the same way
  *    as above (March 2017).
  *
+ *    For the 2020 standard, it's defined as 202002L.
+ *
  *    Before the original standard was approved, quite a few compilers
  *    normally defined it as 0 (or just an empty definition like #define
  *    __cplusplus) to signify "not-conforming". When asked for their strictest
@@ -114,6 +117,7 @@
 #undef PLATFORM_CPP_11
 #undef PLATFORM_CPP_14
 #undef PLATFORM_CPP_17
+#undef PLATFORM_CPP_20
 #undef PLATFORM_CYGWIN
 #undef PLATFORM_DEBUG
 #undef PLATFORM_FREEBSD
@@ -467,6 +471,10 @@
 
 #if __cplusplus >= 201703L          /* i.e. C++17                           */
 #define PLATFORM_CPP_17
+#endif
+
+#if __cplusplus >= 202002L          /* i.e. C++20                           */
+#define PLATFORM_CPP_20
 #endif
 
 #endif
