@@ -117,6 +117,17 @@ enum class msglevel
 };
 
 /**
+ *  Provides an easy-to-search container for strings.  It is useful when
+ *  breaking a line of text into individual tokens.
+ */
+
+using tokenization = std::vector<std::string>;
+
+}               // namespace lib66
+
+/**
+ *  Now we're outside the lib66 namespace, for brevity.
+ *
  *  Since strings are not POD, Clang will error on them when passed to
  *  a variadic function. We could use c_str() directly. Sigh. Let's
  *  make simple macroes for that.... No, use inline function definitions.
@@ -172,15 +183,6 @@ SPTR (const std::string & x)
 }
 
 #endif  // defined USE_CSTR_MACROS
-
-/**
- *  Provides an easy-to-search container for strings.  It is useful when
- *  breaking a line of text into individual tokens.
- */
-
-using tokenization = std::vector<std::string>;
-
-}               // namespace lib66
 
 #endif          // __cplusplus
 
