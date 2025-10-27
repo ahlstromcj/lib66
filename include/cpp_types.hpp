@@ -27,7 +27,7 @@
  * \library       Any application or library
  * \author        Chris Ahlstrom
  * \date          2025-01-30
- * \updates       2025-01-30
+ * \updates       2025-10-27
  * \license       GNU GPL v2 or above
  *
  *  This file defines a minimal set of convenience macros for both C and C++11
@@ -115,6 +115,63 @@ enum class msglevel
     session,        /* cyan                     */
     debug           /* debug                    */
 };
+
+/**
+ *  Since strings are not POD, Clang will error on them when passed to
+ *  a variadic function. We could use c_str() directly. Sigh. Let's
+ *  make simple macroes for that.... No, use inline function definitions.
+ *
+ *      -   V().  "V" is for variadic functions. Merely makes the purpose
+ *          a little more obvious. VARIADIC()? POD()?
+ *      -   CSTR(). Provides a more glaring way to use c_str(); that's all.
+ *      -   CPTR(). Like CSTR(), but if the string is empty, converts it
+ *          to the null pointer required by some C APIs.
+ *      -   STR(). Careful! Converts c_str() by casting away constness.
+ *      -   SPTR(). Like STR(), but if the string is empty, converts it
+ *          to the null pointer required by some C APIs.
+ */
+
+#if defined USE_CSTR_MACROS     /* leave this undefined; use inline funcs   */
+
+#define V(x)        x.c_str()
+#define CSTR(x)     x.c_str()
+#define CPTR(x)     (x.empty() ? nullptr : x.c_str())
+#define STR(x)      const_cast<char *>(x.c_str())
+#define SPTR(x)     (x.empty() ? nullptr : const_cast<char *>(x.c_str()))
+
+#else
+
+inline const char *
+V (const std::string & x)
+{
+    return x.c_str();
+}
+
+inline const char *
+CSTR (const std::string & x)
+{
+    return x.c_str();
+}
+
+inline const char *
+CPTR (const std::string & x)
+{
+    return x.empty() ? nullptr : x.c_str() ;
+}
+
+inline char *
+STR (const std::string & x)
+{
+    return const_cast<char *>(x.c_str());
+}
+
+inline char *
+SPTR (const std::string & x)
+{
+    return x.empty() ? nullptr : const_cast<char *>(x.c_str()) ;
+}
+
+#endif  // defined USE_CSTR_MACROS
 
 /**
  *  Provides an easy-to-search container for strings.  It is useful when
