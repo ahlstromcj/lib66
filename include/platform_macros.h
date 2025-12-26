@@ -1,5 +1,5 @@
-#if ! defined PLATFORM_MACROS_H
-#define PLATFORM_MACROS_H
+#if ! defined LIB66_PLATFORM_MACROS_H
+#define LIB66_PLATFORM_MACROS_H
 
 /*
  *  This file is free software; you can redistribute it and/or modify it under
@@ -632,7 +632,7 @@
 #define set_posix_error(x)       ((x) = PLATFORM_POSIX_ERROR)
 #endif
 
-#endif                  /* PLATFORM_MACROS_H */
+#endif                  /* LIB66_PLATFORM_MACROS_H */
 
 /*
  * platform_macros.h
