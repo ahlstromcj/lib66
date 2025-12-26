@@ -6,7 +6,7 @@
 # \library     lib66
 # \author      Chris Ahlstrom
 # \date        2025-01-30
-# \updates     2025-01-30
+# \updates     2025-12-26
 # \license     $XPC_SUITE_GPL_LICENSE$
 #
 #  This file is part of the "lib66" library. It was part of the libs66
@@ -175,12 +175,12 @@ build_args += [
 #-----------------------------------------------------------------------------
 # Set up some "HAVE" macros.  By default the header file is generated in the
 # "build" directory. If configure_file() is moved to include/meson.build,
-# the the header goes into "build/include", which is what we want.
+# then the header goes into "build/include", which is what we want.
 #-----------------------------------------------------------------------------
 
 cc = meson.get_compiler('cpp')
 cdata = configuration_data()
-cdata.set('limits_h', cc.has_header('limits.h'))
+cdata.set10('limits_h', cc.has_header('limits.h'))
 
 #-----------------------------------------------------------------------------
 # Sub-directories. 'tests' has to be descended into later.

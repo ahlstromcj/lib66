@@ -28,7 +28,7 @@
  * \library       lib66
  * \author        Chris Ahlstrom
  * \date          2022-07-01
- * \updates       2024-04-28
+ * \updates       2025-12-26
  * \license       GNU GPL v2 or above
  *
  *  This file is used mainly for system files and specific build options.  The
@@ -39,28 +39,23 @@
  *
  *      https://mesonbuild.com/Configuration.html
  *
- *  These #defines will define the macro value as True or False.
+ *  These #defines will define the macro value as 1 or 0.
  *  The proper way to test the macro is:
  *
  *      #if LIB66_HAVE_LIMITS_H
- *
- *  We had an error on Arch Linux with "True" apparently not being detected as
- *  a boolean, so we add setting up True/False below. We should perhaps
- *  update this file to better match the descriptions at the URL above.
  */
 
-#if ! defined True
-#define True    1
-#endif
-
-#if ! defined False
-#define False   0
-#endif
-
-// Add "LIB66_" ???
-
+#if ! defined HAVE_LIMITS_H
 #define HAVE_LIMITS_H           @limits_h@
 #define HAVE_LINUX_LIMITS_H     @limits_h@
+#endif
+
+/*
+ * Not sure yet how this can work. Still get the DEPRECATED warning.
+ *
+ * #mesondefine HAVE_LIMITS_H
+ * #mesondefine HAVE_LINUX_LIMITS_H
+ */
 
 #endif          // LIB66_CONFIG_H
 
