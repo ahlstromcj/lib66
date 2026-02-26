@@ -81,7 +81,7 @@ project('lib66',
    license : 'GPLv3',
    meson_version : '>=1.1.0',
    default_options : [
-      'c_std=c11', 'cpp_std=c++14', 'warning_level=3',
+      'c_std=c11', 'cpp_std=c++17', 'warning_level=3',
       'default_library=both'
       ]
    )
@@ -98,7 +98,7 @@ project('lib66',
 lib66_pkg_description = 'Common "66" header files.'
 lib66_pkg_version = meson.project_version()
 lib66_api_version = '1.0'
-lib66_info_date = '2025-01-30'
+lib66_info_date = '2026-02-26'
 lib66_info_build_type = get_option('buildtype')
 lib66_info_build_root = meson.project_build_root()
 lib66_info_lib_type = get_option('default_library')

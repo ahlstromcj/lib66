@@ -1,4 +1,4 @@
-# README for Library Lib66 1.0 2025-01-31
+# README for Library Lib66 1.0 2026-02-26
 
 __Lib66__ is a headers-only support library based on the code
 in the other "66" projects, but that is useful in other applications.
@@ -22,6 +22,8 @@ It also is meant to be a subproject of the "66" projects.
 ##  Code
 
     *   The code is all C/C++ header files.
+    *   C++17 is now assumed as the earliest version for all "66" and
+        "midiname" projects.
 
 ##  Fixes
 
