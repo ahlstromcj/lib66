@@ -6,7 +6,7 @@
 # \library     lib66
 # \author      Chris Ahlstrom
 # \date        2022-06-22
-# \updates     2024-10-30
+# \updates     2026-03-03
 # \license     $XPC_SUITE_GPL_LICENSE$
 #
 #  This file is part of the "lib66" library. See the top-level meson.build
@@ -20,7 +20,14 @@ platform_macros_exe = executable(
    dependencies : [ liblib66_dep ]
    )
 
+exceptions_test_exe = executable(
+   'exceptions_test',
+   sources : [ 'exceptions_test.cpp' ],
+   dependencies : [ liblib66_dep ]
+   )
+
 test('C++ Platform Macros', platform_macros_exe)
+test('Lib66 Exceptions', exceptions_test_exe)
    
 #****************************************************************************
 # meson.build (lib66/tests)

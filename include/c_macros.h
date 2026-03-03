@@ -1,5 +1,5 @@
-#if ! defined C_MACROS_H
-#define C_MACROS_H
+#if ! defined LIB66_C_MACROS_H
+#define LIB66_C_MACROS_H
 
 /*
  *  This file is part of lib66.
@@ -198,7 +198,7 @@ typedef enum
 #define infoprintf(fmt, x)      fprintf(stdout, fmt, x)
 #define infoprintfunc()         fprintf(stdout, "%s\n", __func__)
 
-#endif          // C_MACROS_H
+#endif          // LIB66_C_MACROS_H
 
 /*
  * c_macros.h

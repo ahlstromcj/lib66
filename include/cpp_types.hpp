@@ -1,5 +1,5 @@
-#if ! defined CPP_TYPES_HPP
-#define CPP_TYPES_HPP
+#if ! defined LIB66_CPP_TYPES_HPP
+#define LIB66_CPP_TYPES_HPP
 
 /*
  *  This file is part of lib66.
@@ -186,7 +186,7 @@ SPTR (const std::string & x)
 
 #endif          // __cplusplus
 
-#endif          // CPP_TYPES_HPP
+#endif          // LIB66_CPP_TYPES_HPP
 
 /*
  * cpp_types.hpp
