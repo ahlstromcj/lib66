@@ -27,7 +27,7 @@
  * \library       Any application or library
  * \author        Chris Ahlstrom
  * \date          2015-07-24
- * \updates       2025-03-26
+ * \updates       2025-04-12
  * \license       GNU GPLv2 or above
  *
  *  Copyright (C) 2013-2025 Chris Ahlstrom <ahlstromcj@gmail.com>
@@ -243,9 +243,9 @@
  * #define PLATFORM_IPHONE_OS
  */
 
-#if defined SEQ66_PLATFORM_UNIX
-#define SEQ66_PLATFORM_POSIX_API
-#define SEQ66_PLATFORM_PTHREADS
+#if defined PLATFORM_UNIX
+#define PLATFORM_POSIX_API
+#define PLATFORM_PTHREADS
 #if ! defined POSIX
 #define POSIX                          /* defined for legacy code purposes  */
 #endif
@@ -554,8 +554,8 @@
  *  Set if the platform supports an implementation of glob(3)
  */
 
-#if defined SEQ66_PLATFORM_UNIX || defined SEQ66_PLATFORM_MINGW
-#define SEQ66_PLATFORM_GLOB
+#if defined PLATFORM_UNIX || defined PLATFORM_MINGW
+#define PLATFORM_GLOB
 #endif
 
 /**
