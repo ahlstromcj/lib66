@@ -27,7 +27,7 @@
  * \library       Any application or library
  * \author        Chris Ahlstrom
  * \date          2025-01-30
- * \updates       2025-10-27
+ * \updates       2026-05-20
  * \license       GNU GPL v2 or above
  *
  *  This file defines a minimal set of convenience macros for both C and C++11
@@ -38,8 +38,9 @@
 
 #if defined __cplusplus
 
-#include <string>                       /* std::string class                */
-#include <vector>                       /* std::vector class                */
+#include <map>                          /* std::map<> template class        */
+#include <string>                       /* std::string<> template class     */
+#include <vector>                       /* std::vector<> template class     */
 
 /*
  *  Helps to hide our definitions.
@@ -122,6 +123,20 @@ enum class msglevel
  */
 
 using tokenization = std::vector<std::string>;
+
+/**
+ *  Provides a pair of strings, perhaps extracted from "name = value" pairs.
+ *  Meant to be inserted into a tokenpairs map.
+ */
+
+using tokenpair = std::pair<std::string, std::string>;
+
+/**
+ *  Provides an easy-to-search container for pairs of strings, perhaps
+ *  extracted from "name = value" pairs.
+ */
+
+using tokenpairs = std::map<std::string, std::string>;
 
 }               // namespace lib66
 
