@@ -6,7 +6,7 @@
 # \library     lib66
 # \author      Chris Ahlstrom
 # \date        2025-01-30
-# \updates     2025-12-26
+# \updates     2026-05-22
 # \license     $XPC_SUITE_GPL_LICENSE$
 #
 #  This file is part of the "lib66" library. It was part of the libs66
@@ -79,7 +79,7 @@ project('lib66',
    [ 'c', 'cpp' ],
    version : '1.0',
    license : 'GPLv3',
-   meson_version : '>=1.1.0',
+   meson_version : '>=1.4.0',
    default_options : [
       'c_std=c11', 'cpp_std=c++17', 'warning_level=3',
       'default_library=both'
@@ -98,7 +98,7 @@ project('lib66',
 lib66_pkg_description = 'Common "66" header files.'
 lib66_pkg_version = meson.project_version()
 lib66_api_version = '1.0'
-lib66_info_date = '2026-02-26'
+lib66_info_date = '2026-05-22'
 lib66_info_build_type = get_option('buildtype')
 lib66_info_build_root = meson.project_build_root()
 lib66_info_lib_type = get_option('default_library')
