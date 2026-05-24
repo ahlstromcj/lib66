@@ -22,11 +22,41 @@
  * \library       lib66
  * \author        Chris Ahlstrom
  * \date          2025-01-30
- * \updates       2025-01-30
+ * \updates       2026-05-24
  * \license       See above.
  *
  *      This small program merely shows the PLATFORM_... macros actually
  *      selected for the build.
+ *
+ * Git Bash:
+ *
+ *      lib66-1.0 May 24 2026 compiler settings
+ *      __clang__ defined
+ *      __MINGW32__ defined
+ *      __MINGW32__ defined
+ *      _WIN32 defined
+ *      _WIN32_WINNT defined
+ *      _WIN64 defined
+ *      lib66-1.0 May 24 2026 platform settings
+ *      32-bit platform
+ *      64-bit platform
+ *      C++11 compiler platform
+ *      C++14 compiler platform
+ *      C++17 compiler platform
+ *      glob(3) supported
+ *      GNU platform
+ *      Mingw platform
+ *      Ming or UNIX platform
+ *      Ming or Windows platform
+ *      POSIX error code -1
+ *      POSIX success code 0
+ *      Release build platform
+ *      Win32 strict platform
+ *      Windows platform
+ *      Windows 32-bit platform
+ *      Windows 64-bit platform
+ *      32-bit platform
+ *      64-bit platform
  */
 
 #include <cstdlib>                      /* EXIT_SUCCESS, EXIT_FAILURE       */
@@ -42,94 +72,182 @@
 int
 main (int /*argc*/, char * /*argv*/ [])
 {
+    std::cout << lib66_version() << " compiler settings" << std::endl;
+
+#if defined __clang__
+    std::cout << "__clang__ defined" << std::endl;
+#endif
+
+#if defined __GNUC__
+    std::cout << "__clang__ defined" << std::endl;
+#endif
+
+#if defined __MINGW32__
+    std::cout << "__MINGW32__ defined" << std::endl;
+#endif
+
+#if defined __MINGW64__
+    std::cout << "__MINGW32__ defined" << std::endl;
+#endif
+
+#if defined _MSC_VER
+    std::cout << "_MSC_VER defined" << std::endl;
+#endif
+
+#if defined _WIN32
+    std::cout << "_WIN32 defined" << std::endl;
+#endif
+
+#if defined _WIN32_WINNT
+    std::cout << "_WIN32_WINNT defined" << std::endl;
+#endif
+
+#if defined WIN32
+    std::cout << "WIN32 defined" << std::endl;
+#endif
+
+#if defined _WIN64
+    std::cout << "_WIN64 defined" << std::endl;
+#endif
+
+#if defined WIN64
+    std::cout << "WIN64 defined" << std::endl;
+#endif
+
     std::cout << lib66_version() << " platform settings" << std::endl;
+
 #if defined PLATFORM_32_BIT
-    std::cout << "32-bit code" << std::endl;
+    std::cout << "32-bit platform" << std::endl;
 #endif
+
 #if defined PLATFORM_64_BIT
-    std::cout << "64-bit code" << std::endl;
+    std::cout << "64-bit platform" << std::endl;
 #endif
+
 #if defined PLATFORM_CLANG
-    std::cout << "Clang compiler" << std::endl;
+    std::cout << "Clang compiler platform" << std::endl;
 #endif
+
 #if defined PLATFORM_CPP_11
-    std::cout << "C++11 compiler" << std::endl;
+    std::cout << "C++11 compiler platform" << std::endl;
 #endif
+
 #if defined PLATFORM_CPP_14
-    std::cout << "C++14 compiler" << std::endl;
+    std::cout << "C++14 compiler platform" << std::endl;
 #endif
+
 #if defined PLATFORM_CPP_17
-    std::cout << "C++17 compiler" << std::endl;
+    std::cout << "C++17 compiler platform" << std::endl;
 #endif
+
+#if defined PLATFORM_CPP_20
+    std::cout << "C++20 compiler platform" << std::endl;
+#endif
+
+#if defined PLATFORM_CPP_26
+    std::cout << "C++26 compiler platform" << std::endl;
+#endif
+
 #if defined PLATFORM_CYGWIN
-    std::cout << "CYGWIN" << std::endl;
+    std::cout << "CYGWIN platform" << std::endl;
 #endif
+
 #if defined PLATFORM_DEBUG
-    std::cout << "Debug build" << std::endl;
+    std::cout << "Debug build platform" << std::endl;
 #endif
+
 #if defined PLATFORM_FREEBSD
     std::cout << "FreeBSD platform" << std::endl;
 #endif
+
 #if defined PLATFORM_GLOB
     std::cout << "glob(3) supported" << std::endl;
 #endif
+
 #if defined PLATFORM_GNU
     std::cout << "GNU platform" << std::endl;
 #endif
+
 #if defined PLATFORM_IPHONE_OS
     std::cout << "iPhone platform" << std::endl;
 #endif
+
 #if defined PLATFORM_LINUX
     std::cout << "Linux platform" << std::endl;
 #endif
+
 #if defined PLATFORM_MACOSX
     std::cout << "Mac OSX platform" << std::endl;
 #endif
+
 #if defined PLATFORM_MINGW
     std::cout << "Mingw platform" << std::endl;
 #endif
+
 #if defined PLATFORM_MING_OR_UNIX
     std::cout << "Ming or UNIX platform" << std::endl;
 #endif
+
 #if defined PLATFORM_MING_OR_WINDOWS
     std::cout << "Ming or Windows platform" << std::endl;
 #endif
+
 #if defined PLATFORM_MSVC
-    std::cout << "Microsoft Visual Studio" << std::endl;
+    std::cout << "Microsoft Visual Studio platform" << std::endl;
 #endif
+
 #if defined PLATFORM_POSIX_API
-    std::cout << "POSIX API" << std::endl;
+    std::cout << "POSIX API platform" << std::endl;
 #endif
+
 #if defined PLATFORM_POSIX_ERROR
     std::cout << "POSIX error code " << PLATFORM_POSIX_ERROR << std::endl;
 #endif
+
 #if defined PLATFORM_POSIX_SUCCESS
     std::cout << "POSIX success code " << PLATFORM_POSIX_SUCCESS << std::endl;
 #endif
+
 #if defined PLATFORM_RELEASE
-    std::cout << "Release build" << std::endl;
+    std::cout << "Release build platform" << std::endl;
 #endif
+
 #if defined PLATFORM_UNIX
     std::cout << "UNIX platform" << std::endl;
 #endif
+
 #if defined PLATFORM_WIN32_STRICT
     std::cout << "Win32 strict platform" << std::endl;
 #endif
+
 #if defined PLATFORM_WINDOWS
     std::cout << "Windows platform" << std::endl;
 #endif
+
 #if defined PLATFORM_WINDOWS_32
     std::cout << "Windows 32-bit platform" << std::endl;
 #endif
+
 #if defined PLATFORM_WINDOWS_64
     std::cout << "Windows 64-bit platform" << std::endl;
 #endif
+
 #if defined PLATFORM_WINDOWS_UNICODE
     std::cout << "Windows UNICODE platform" << std::endl;
 #endif
+
 #if defined PLATFORM_XSI
     std::cout << "XSI platform" << std::endl;
 #endif
+
+#if defined PLATFORM_32_BIT
+    std::cout << "32-bit platform" << std::endl;
+#endif
+
+#if defined PLATFORM_64_BIT
+    std::cout << "64-bit platform" << std::endl;
+#endif
+
     return EXIT_SUCCESS;
 }
 
@@ -138,4 +256,3 @@ main (int /*argc*/, char * /*argv*/ [])
  *
  * vim: sw=4 ts=4 wm=4 et ft=cpp
  */
-

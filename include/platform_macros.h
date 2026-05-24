@@ -27,10 +27,10 @@
  * \library       Any application or library
  * \author        Chris Ahlstrom
  * \date          2015-07-24
- * \updates       2025-04-12
+ * \updates       2026-05-24
  * \license       GNU GPLv2 or above
  *
- *  Copyright (C) 2013-2025 Chris Ahlstrom <ahlstromcj@gmail.com>
+ *  Copyright (C) 2013-2026 Chris Ahlstrom <ahlstromcj@gmail.com>
  *
  *  We need a uniform way to specify OS and compiler features without
  *  littering the code with macros from disparate compilers.  Put all
@@ -68,6 +68,8 @@
  *       -  PLATFORM_GLOB
  *       -  PLATFORM_GNU
  *       -  PLATFORM_MINGW
+ *       -  PLATFORM_MINGW_W32
+ *       -  PLATFORM_MINGW_W64
  *       -  PLATFORM_MING_OR_UNIX
  *       -  PLATFORM_MING_OR_WINDOWS
  *       -  PLATFORM_MSVC (alternative to _MSC_VER)
@@ -153,34 +155,78 @@
 #else
 
 #if defined _WIN32                      /* defined by Microsoft compiler    */
-#define PLATFORM_WINDOWS_32
-#define PLATFORM_WINDOWS
 #define Windows
+#define PLATFORM_WINDOWS
+#define PLATFORM_WINDOWS_32
 #define PLATFORM_32_BIT
 #else
 #if defined WIN32                       /* defined by Mingw compiler        */
-#define PLATFORM_WINDOWS_32
-#define PLATFORM_WINDOWS
 #define Windows
+#define PLATFORM_WINDOWS
+#define PLATFORM_WINDOWS_32
 #define PLATFORM_32_BIT
 #endif
 #endif
 
 #if defined _WIN64                      /* defined by Microsoft compiler    */
+#define Windows
 #define PLATFORM_WINDOWS_64
 #define PLATFORM_WINDOWS
-#define Windows
 #define PLATFORM_64_BIT
 #else
 #if defined WIN64                       /* defined by Mingw compiler        */
+#define Windows
 #define PLATFORM_WINDOWS_64
 #define PLATFORM_WINDOWS
-#define Windows
 #define PLATFORM_64_BIT
 #endif
 #endif
 
 #endif
+
+/**
+ *  Provides macros that mean 32-bit, and only 32-bit Windows.  For
+ *  example, in Windows, _WIN32 is defined for both 32- and 64-bit
+ *  systems, because Microsoft didn't want to break people's 32-bit code.
+ *  So we need a specific macro.
+ *
+ *      -  PLATFORM_32_BIT is defined on all platforms.
+ *      -  WIN32 is defined on Windows platforms.
+ *
+ *  Prefer the former macro.  The second is defined only for legacy
+ *  purposes for Windows builds, and might eventually disappear.
+ */
+
+#if defined PLATFORM_WINDOWS
+#if defined _WIN32 && ! defined _WIN64
+
+#if ! defined WIN32
+#define WIN32                          /* defined for legacy purposes        */
+#endif
+
+#if ! defined PLATFORM_32_BIT
+#define PLATFORM_32_BIT
+#undef PLATFORM_WINDOWS_64
+#undef PLATFORM_64_BIT
+#endif
+
+#endif
+
+/*
+ *  Without this #define, the InitializeCriticalSectionAndSpinCount() function
+ *  is undefined.  This version level means "Windows 2000 and higher".
+ *  For Windows 10, the value would be 0x0A00.
+ */
+
+#if ! defined _WIN32_WINNT
+#define _WIN32_WINNT        0x0500
+#endif
+
+#if defined UNICODE || defined _UNICODE
+#define PLATFORM_WINDOWS_UNICODE
+#endif
+
+#endif                                 /* PLATFORM_WINDOWS            */
 
 /**
  *  FreeBSD macros.
@@ -252,33 +298,6 @@
 #endif
 
 /**
- *  Provides macros that mean 32-bit, and only 32-bit Windows.  For
- *  example, in Windows, _WIN32 is defined for both 32- and 64-bit
- *  systems, because Microsoft didn't want to break people's 32-bit code.
- *  So we need a specific macro.
- *
- *      -  PLATFORM_32_BIT is defined on all platforms.
- *      -  WIN32 is defined on Windows platforms.
- *
- *  Prefer the former macro.  The second is defined only for legacy
- *  purposes for Windows builds, and might eventually disappear.
- */
-
-#if defined PLATFORM_WINDWS
-#if defined _WIN32 && ! defined _WIN64
-
-#if ! defined WIN32
-#define WIN32                          /* defined for legacy purposes        */
-#endif
-
-#if ! defined PLATFORM_32_BIT
-#define PLATFORM_32_BIT
-#endif
-
-#endif
-#endif                                 /* PLATFORM_WINDOWS            */
-
-/**
  *  Provides macros that mean 64-bit, and only 64-bit.
  *
  *      -  PLATFORM_64_BIT is defined on all platforms.
@@ -338,6 +357,8 @@
  *      -  PLATFORM_MSVC (replaces _MSC_VER)
  *      -  PLATFORM_GNU (replaces __GNUC__)
  *      -  PLATFORM_MINGW (replaces __MINGW32__)
+ *      -  PLATFORM_MINGW_W32
+ *      -  PLATFORM_MINGW_W64
  *      -  PLATFORM_CYGWIN
  */
 
@@ -385,33 +406,17 @@
 
 #if defined __MINGW32__
 #define PLATFORM_MINGW
+#define PLATFORM_MINGW_W32
 #define PLATFORM_WINDOWS
 #define PLATFORM_WINDOWS_32
 #endif
 
 #if defined __MINGW64__
 #define PLATFORM_MINGW
+#define PLATFORM_MINGW_W64
 #define PLATFORM_WINDOWS
 #define PLATFORM_WINDOWS_64
 #endif
-
-#if defined PLATFORM_WINDOWS
-
-/*
- *  Without this #define, the InitializeCriticalSectionAndSpinCount() function
- *  is undefined.  This version level means "Windows 2000 and higher".
- *  For Windows 10, the value would be 0x0A00.
- */
-
-#if ! defined _WIN32_WINNT
-#define _WIN32_WINNT        0x0500
-#endif
-
-#if defined UNICODE || defined _UNICODE
-#define PLATFORM_WINDOWS_UNICODE
-#endif
-
-#endif  // defined PLATFORM_WINDOWS
 
 /**
  *  Provides a way to flag unused parameters at each "usage", without disabling
@@ -475,6 +480,10 @@
 
 #if __cplusplus >= 202002L          /* i.e. C++20                           */
 #define PLATFORM_CPP_20
+#endif
+
+#if __cplusplus > 202302L           /* i.e. C++26                           */
+#define PLATFORM_CPP_26
 #endif
 
 #endif
