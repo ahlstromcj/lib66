@@ -395,17 +395,21 @@
  */
 
 #if defined __CYGWIN__
-#if defined __CYGWIN32__
+
 #define PLATFORM_CYGWIN
+
+#if defined __CYGWIN32__
 #define PLATFORM_WINDOWS_32
 #elif defined __CYGWIN64__
 #endif
-#define PLATFORM_CYGWIN
 #define PLATFORM_WINDOWS_64
+
 #else
+
 #if defined PLATFORM_WINDOWS_32
 #define PLATFORM_WIN32_STRICT
 #endif
+
 #endif
 
 #if defined __MINGW32__

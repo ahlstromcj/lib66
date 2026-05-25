@@ -1,0 +1,11 @@
+TODOs for the lib66 library
+Chris Ahlstrom
+2026-05-25 to 2026-05-25
+
+This file lists only the high-priority features and fixtures we need
+to do for Lib66.
+
+    -   Meson properly detects cygwin when setting up, but
+        the platform_macros test does not show cygwin.
+
+# vim: sw=4 ts=4 wm=8 et ft=sh
