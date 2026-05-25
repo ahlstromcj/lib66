@@ -163,12 +163,14 @@ build_args = []
 
 liblib66_includes = include_directories('.', 'include')
 
-add_global_link_arguments(
-  '-static-libgcc',
-  '-static-libstdc++',
-  '-static',
-  language: 'cpp',
-)
+if not lib66_subproj
+   add_global_link_arguments(
+     '-static-libgcc',
+     '-static-libstdc++',
+     '-static',
+     language: 'cpp',
+   )
+endif
 
 #-----------------------------------------------------------------------------
 # Used by the lib66_version() function.
