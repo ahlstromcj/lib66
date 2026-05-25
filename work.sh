@@ -8,7 +8,7 @@
 # \library        lib66
 # \author         Chris Ahlstrom
 # \date           2025-01-30
-# \update         2026-05-21
+# \update         2026-05-25
 # \version        $Revision$
 # \license        $XPC_SUITE_GPL_LICENSE$
 #
@@ -33,7 +33,7 @@ LANG=C
 export LANG
 CYGWIN=binmode
 export CYGWIN
-export LIB66_SCRIPT_EDIT_DATE="2026-05-21"
+export LIB66_SCRIPT_EDIT_DATE="2026-05-25"
 export LIB66_LIBRARY_API_VERSION="0.1"
 export LIB66_LIBRARY_VERSION="$LIB66_LIBRARY_API_VERSION.0"
 export LIB66="lib66"
@@ -65,8 +65,6 @@ DOGNU="no"           # --gnu. Default is the native compiler.
 DOHELP="no"          # --help. Duh!
 DOINSTALL="no"       # --install. Requires the release be built already.
 DOMAKE="yes"         # Default action after creating the build directory.
-DOMAKEPDF="no"       # --pdf. Make the manual, always as a separate step.
-DONSIS="no"          # --nsis. Make an NSIS Windows installer.
 DOOPTHELP="no"       # --option-help. Duh!
 DOPACK="no"          # --pack. Clean and create a tar-file.
 DOPOTEXT="no"        # --potext. Use translation [NOT YET SUPPORTED].
@@ -169,18 +167,6 @@ get_options () {
                DOMAKE="no"
                DOSETUP="no"
                DOPACK="yes"
-               ;;
-
-            --pdf)
-               DOMAKEPDF="yes"
-               DOMAKE="no"
-               DOSETUP="no"
-               ;;
-
-            --nsis)
-               DONSIS="yes"
-               DOMAKE="no"
-               DOSETUP="no"
                ;;
 
             --potext)
@@ -305,10 +291,6 @@ Many of these commands are best used when setting up the build
  --gnu, --gcc        Use the GNU compilers (the default on Linux). Exports CC
                      and CXX. Build directory is 'build/gcc'. If the
                      compiler is not specified, the build is in 'build/cc'.
- --pdf    *********  Build the PDF documentation. Currently done not by
-                     doc/latex/tex/meson.build, but by calling
-                     doc/latex/make_pdf.sh.
- --nsis   *********  Use NSIS to make a Windows installer on Linux.
  --clean             Delete the usual derived files from the project. Also
                      do "git checkout doc/cfg66-dev-manual.pdf"
  --rebuild           Clean the project and build from scratch.
@@ -321,16 +303,6 @@ Many of these commands are best used when setting up the build
                      (instead of through the work.sh script).
 E_O_F
    exit 0
-}
-
-#******************************************************************************
-#  PDF
-#------------------------------------------------------------------------------
-
-make_pdf () {
-   cd doc/latex
-   ./make_pdf.sh
-   cd ../..
 }
 
 #******************************************************************************
@@ -543,18 +515,7 @@ fi
 # Make the PDF, then exit. We might get doc/latex/tex/meson.build
 # to do this work at some point, but for now we use a script in
 # the doc/latex directory.
-#
-# ENABLE_DOCS=""
-# if test "$DOMAKEPDF" = "yes" ; then
-#    ENABLE_DOCS="-Ddocs=true"
-#    echo "Will rebuild the Seq66 User Manual...."
-# fi
 #------------------------------------------------------------------------------
-
-if test "$DOMAKEPDF" = "yes" ; then
-   make_pdf
-   exit 0
-fi
 
 # This removes the work products, but leaves the README intact.
 
@@ -615,11 +576,6 @@ if test "$DOCROSS" = "yes" ; then
          exit 1
       fi
    fi
-fi
-
-if test "$DONSIS" = "yes" ; then
-   meson compile -C $BUILD_DIR nsisinstaller
-   exit 0
 fi
 
 if test "$DOMAKE" = "yes" ; then

@@ -27,7 +27,7 @@
  * \library       Any application or library
  * \author        Chris Ahlstrom
  * \date          2015-07-24
- * \updates       2026-05-24
+ * \updates       2026-05-25
  * \license       GNU GPLv2 or above
  *
  *  Copyright (C) 2013-2026 Chris Ahlstrom <ahlstromcj@gmail.com>
@@ -77,10 +77,12 @@
  *    -  API:
  *       -  PLATFORM_POSIX_API (alternative to POSIX)
  *    -  Language:
+ *       -  PLATFORM_CPP_98
  *       -  PLATFORM_CPP_11
  *       -  PLATFORM_CPP_14
  *       -  PLATFORM_CPP_17
  *       -  PLATFORM_CPP_20
+ *       -  PLATFORM_CPP_26
  *    -  Other:
  *       -  PLATFORM_POSIX_ERROR
  *       -  PLATFORM_POSIX_SUCCESS
@@ -116,10 +118,12 @@
 #undef PLATFORM_32_BIT
 #undef PLATFORM_64_BIT
 #undef PLATFORM_CLANG
+#undef PLATFORM_CPP_98
 #undef PLATFORM_CPP_11
 #undef PLATFORM_CPP_14
 #undef PLATFORM_CPP_17
 #undef PLATFORM_CPP_20
+#undef PLATFORM_CPP_26
 #undef PLATFORM_CYGWIN
 #undef PLATFORM_DEBUG
 #undef PLATFORM_FREEBSD
@@ -464,28 +468,30 @@
 #define PLATFORM_CPP_11
 #endif
 
-#else
+#endif
 
-#if __cplusplus >= 201103L          /* i.e. C++11                           */
+#if __cplusplus == 199711L          /* i.e. C++11                           */
+#define PLATFORM_CPP_98
+#endif
+
+#if __cplusplus == 201103L          /* i.e. C++11                           */
 #define PLATFORM_CPP_11
 #endif
 
-#if __cplusplus >= 201402L          /* i.e. C++14                           */
+#if __cplusplus == 201402L          /* i.e. C++14                           */
 #define PLATFORM_CPP_14
 #endif
 
-#if __cplusplus >= 201703L          /* i.e. C++17                           */
+#if __cplusplus == 201703L          /* i.e. C++17                           */
 #define PLATFORM_CPP_17
 #endif
 
-#if __cplusplus >= 202002L          /* i.e. C++20                           */
+#if __cplusplus == 202002L          /* i.e. C++20                           */
 #define PLATFORM_CPP_20
 #endif
 
 #if __cplusplus > 202302L           /* i.e. C++26                           */
 #define PLATFORM_CPP_26
-#endif
-
 #endif
 
 /**

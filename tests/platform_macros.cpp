@@ -22,41 +22,13 @@
  * \library       lib66
  * \author        Chris Ahlstrom
  * \date          2025-01-30
- * \updates       2026-05-24
+ * \updates       2026-05-25
  * \license       See above.
  *
  *      This small program merely shows the PLATFORM_... macros actually
  *      selected for the build.
  *
- * Git Bash:
- *
- *      lib66-1.0 May 24 2026 compiler settings
- *      __clang__ defined
- *      __MINGW32__ defined
- *      __MINGW32__ defined
- *      _WIN32 defined
- *      _WIN32_WINNT defined
- *      _WIN64 defined
- *      lib66-1.0 May 24 2026 platform settings
- *      32-bit platform
- *      64-bit platform
- *      C++11 compiler platform
- *      C++14 compiler platform
- *      C++17 compiler platform
- *      glob(3) supported
- *      GNU platform
- *      Mingw platform
- *      Ming or UNIX platform
- *      Ming or Windows platform
- *      POSIX error code -1
- *      POSIX success code 0
- *      Release build platform
- *      Win32 strict platform
- *      Windows platform
- *      Windows 32-bit platform
- *      Windows 64-bit platform
- *      32-bit platform
- *      64-bit platform
+ *      Results on various platforms are collected in test/macros.text.
  */
 
 #include <cstdlib>                      /* EXIT_SUCCESS, EXIT_FAILURE       */
@@ -72,14 +44,23 @@
 int
 main (int /*argc*/, char * /*argv*/ [])
 {
-    std::cout << lib66_version() << " compiler settings" << std::endl;
+    std::cout
+        << lib66_version() << " compiler & platform settings\n"
+        << std::endl
+        ;
 
 #if defined __clang__
-    std::cout << "__clang__ defined" << std::endl;
+    std::cout
+        << "__clang__ (v. " << __clang_major__ << ") defined"
+        << std::endl
+        ;
 #endif
 
 #if defined __GNUC__
-    std::cout << "__clang__ defined" << std::endl;
+    std::cout
+        << "__GNUC__ (v. " << __GNUC__ << ") extensions defined"
+        << std::endl
+        ;
 #endif
 
 #if defined __MINGW32__
@@ -87,7 +68,7 @@ main (int /*argc*/, char * /*argv*/ [])
 #endif
 
 #if defined __MINGW64__
-    std::cout << "__MINGW32__ defined" << std::endl;
+    std::cout << "__MINGW64__ defined" << std::endl;
 #endif
 
 #if defined _MSC_VER
@@ -114,7 +95,7 @@ main (int /*argc*/, char * /*argv*/ [])
     std::cout << "WIN64 defined" << std::endl;
 #endif
 
-    std::cout << lib66_version() << " platform settings" << std::endl;
+    std::cout << std::endl;
 
 #if defined PLATFORM_32_BIT
     std::cout << "32-bit platform" << std::endl;
@@ -126,6 +107,10 @@ main (int /*argc*/, char * /*argv*/ [])
 
 #if defined PLATFORM_CLANG
     std::cout << "Clang compiler platform" << std::endl;
+#endif
+
+#if defined PLATFORM_CPP_98
+    std::cout << "C++98 compiler platform" << std::endl;
 #endif
 
 #if defined PLATFORM_CPP_11
@@ -152,10 +137,6 @@ main (int /*argc*/, char * /*argv*/ [])
     std::cout << "CYGWIN platform" << std::endl;
 #endif
 
-#if defined PLATFORM_DEBUG
-    std::cout << "Debug build platform" << std::endl;
-#endif
-
 #if defined PLATFORM_FREEBSD
     std::cout << "FreeBSD platform" << std::endl;
 #endif
@@ -168,8 +149,8 @@ main (int /*argc*/, char * /*argv*/ [])
     std::cout << "GNU platform" << std::endl;
 #endif
 
-#if defined PLATFORM_IPHONE_OS
-    std::cout << "iPhone platform" << std::endl;
+#if defined PLATFORM_UNIX
+    std::cout << "UNIX platform" << std::endl;
 #endif
 
 #if defined PLATFORM_LINUX
@@ -178,6 +159,10 @@ main (int /*argc*/, char * /*argv*/ [])
 
 #if defined PLATFORM_MACOSX
     std::cout << "Mac OSX platform" << std::endl;
+#endif
+
+#if defined PLATFORM_IPHONE_OS
+    std::cout << "iPhone platform" << std::endl;
 #endif
 
 #if defined PLATFORM_MINGW
@@ -208,12 +193,12 @@ main (int /*argc*/, char * /*argv*/ [])
     std::cout << "POSIX success code " << PLATFORM_POSIX_SUCCESS << std::endl;
 #endif
 
-#if defined PLATFORM_RELEASE
-    std::cout << "Release build platform" << std::endl;
+#if defined PLATFORM_DEBUG
+    std::cout << "Debug build platform" << std::endl;
 #endif
 
-#if defined PLATFORM_UNIX
-    std::cout << "UNIX platform" << std::endl;
+#if defined PLATFORM_RELEASE
+    std::cout << "Release build platform" << std::endl;
 #endif
 
 #if defined PLATFORM_WIN32_STRICT
