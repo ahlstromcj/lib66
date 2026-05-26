@@ -8,7 +8,7 @@
 # \library        lib66
 # \author         Chris Ahlstrom
 # \date           2025-01-30
-# \update         2026-05-25
+# \update         2026-05-26
 # \version        $Revision$
 # \license        $XPC_SUITE_GPL_LICENSE$
 #
@@ -33,7 +33,7 @@ LANG=C
 export LANG
 CYGWIN=binmode
 export CYGWIN
-export LIB66_SCRIPT_EDIT_DATE="2026-05-25"
+export LIB66_SCRIPT_EDIT_DATE="2026-05-26"
 export LIB66_LIBRARY_API_VERSION="0.1"
 export LIB66_LIBRARY_VERSION="$LIB66_LIBRARY_API_VERSION.0"
 export LIB66="lib66"
@@ -302,8 +302,9 @@ Many of these commands are best used when setting up the build
  --gnu, --gcc        Use the GNU compilers (the default on Linux). Exports CC
                      and CXX. Build directory is 'build/gcc'. If the
                      compiler is not specified, the build is in 'build/cc'.
- --clean             Delete the usual derived files from the project. Also
-                     do "git checkout doc/cfg66-dev-manual.pdf"
+ --clean             Delete the derived files from the project. All
+                     sub-directories in 'build' are removed. Use 'rm -rf ...'
+                     to remove just one of the build directories.
  --rebuild           Clean the project and build from scratch.
  --pack [ tag ]      A simple quick packaging of the code; the tag goes
                      into the tarball name.

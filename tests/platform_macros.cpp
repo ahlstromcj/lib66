@@ -64,7 +64,10 @@ main (int /*argc*/, char * /*argv*/ [])
         << "__GNUC__ (v. " << __GNUC__
         << "." << __GNUC_MINOR__
         << "." << __GNUC_PATCHLEVEL__
-        << ") extensions"
+        << ")"
+#if defined __clang__
+        << " extensions"
+#endif
         << std::endl
         ;
 #endif
@@ -86,7 +89,10 @@ main (int /*argc*/, char * /*argv*/ [])
 #endif
 
 #if defined _WIN32_WINNT
-    std::cout << "_WIN32_WINNT defined" << std::endl;
+    std::cout
+        << "_WIN32_WINNT = 0x" << std::hex << _WIN32_WINNT
+        << std::endl
+        ;
 #endif
 
 #if defined WIN32
@@ -192,7 +198,10 @@ main (int /*argc*/, char * /*argv*/ [])
 #endif
 
 #if defined PLATFORM_POSIX_ERROR
-    std::cout << "POSIX error code " << PLATFORM_POSIX_ERROR << std::endl;
+    std::cout
+        << "POSIX error code " << std::dec << PLATFORM_POSIX_ERROR
+        << std::endl
+        ;
 #endif
 
 #if defined PLATFORM_POSIX_SUCCESS
