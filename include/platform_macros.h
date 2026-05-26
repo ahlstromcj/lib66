@@ -27,7 +27,7 @@
  * \library       Any application or library
  * \author        Chris Ahlstrom
  * \date          2015-07-24
- * \updates       2026-05-25
+ * \updates       2026-05-26
  * \license       GNU GPLv2 or above
  *
  *  Copyright (C) 2013-2026 Chris Ahlstrom <ahlstromcj@gmail.com>
@@ -36,10 +36,6 @@
  *  littering the code with macros from disparate compilers.  Put all
  *  the compiler-specific stuff here to define "PLATFORM" macros.
  *
- * Determining useful macros:
- *
- *    -  GNU:  cpp -dM myheaderfile
- *
  * Settings to distinguish, based on compiler-supplied macros:
  *
  *    -  Platform macros:
@@ -47,42 +43,56 @@
  *       -  Linux
  *       -  MacOSX
  *    -  Platform macros (in the absense of Windows, Linux macros):
- *       -  PLATFORM_WINDOWS
- *       -  PLATFORM_WINDOWS_32
- *       -  PLATFORM_WINDOWS_64
- *       -  PLATFORM_WINDOWS_UNICODE
- *       -  PLATFORM_LINUX
- *       -  PLATFORM_FREEBSD
- *       -  PLATFORM_MACOSX
- *       -  PLATFORM_IPHONE_OS (to do!)
- *       -  PLATFORM_UNIX
+ *      -   platform_windows.h
+ *          -  PLATFORM_WINDOWS
+ *          -  PLATFORM_WINDOWS_32
+ *          -  PLATFORM_WIN32_STRICT
+ *          -  PLATFORM_WINDOWS_64
+ *          -  PLATFORM_WINDOWS_UNICODE
+ *          -  PLATFORM_CYGWIN
+ *          -  PLATFORM_MINGW
+ *          -  PLATFORM_MINGW_W32
+ *          -  PLATFORM_MINGW_W64
+ *          -  PLATFORM_POSIX_API
+ *      -   platform_posix.h
+ *          -  PLATFORM_LINUX
+ *          -  PLATFORM_FREEBSD, _NETBSD, _OPENBSD, _DRAGONFLY
+ *          -  PLATFORM_MACOSX
+ *          -  PLATFORM_IPHONE_OS (to do!)
+ *          -  PLATFORM_UNIX
+ *          -  PLATFORM_POSIX_API
  *    -  Architecture size macros:
  *       -  PLATFORM_32_BIT
  *       -  PLATFORM_64_BIT
  *    -  Debugging macros:
  *       -  PLATFORM_DEBUG
  *       -  PLATFORM_RELEASE
- *    -  Compiler:
+ *    -  platform_compilers.h:
  *       -  PLATFORM_CLANG
  *       -  PLATFORM_CYGWIN
  *       -  PLATFORM_GLOB
  *       -  PLATFORM_GNU
- *       -  PLATFORM_MINGW
- *       -  PLATFORM_MINGW_W32
- *       -  PLATFORM_MINGW_W64
- *       -  PLATFORM_MING_OR_UNIX
- *       -  PLATFORM_MING_OR_WINDOWS
  *       -  PLATFORM_MSVC (alternative to _MSC_VER)
  *       -  PLATFORM_XSI
- *    -  API:
- *       -  PLATFORM_POSIX_API (alternative to POSIX)
- *    -  Language:
- *       -  PLATFORM_CPP_98
- *       -  PLATFORM_CPP_11
- *       -  PLATFORM_CPP_14
- *       -  PLATFORM_CPP_17
- *       -  PLATFORM_CPP_20
- *       -  PLATFORM_CPP_26
+ *       -  UNUSED(x)
+ *       -  UNUSED_FUNCTION(x)
+ *       -  UNUSED_VOID(x)
+ *       -  Language:
+ *          -  PLATFORM_CPP_98
+ *          -  PLATFORM_CPP_11
+ *          -  PLATFORM_CPP_14
+ *          -  PLATFORM_CPP_17
+ *          -  PLATFORM_CPP_20
+ *          -  PLATFORM_CPP_26
+ *    -  platform_hardware.h:
+ *          -  PLATFORM_HARDWARE_AMD64
+ *          -  PLATFORM_HARDWARE_ARM
+ *          -  PLATFORM_HARDWARE_ARM64
+ *          -  PLATFORM_HARDWARE_INTEL86
+ *          -  PLATFORM_HARDWARE_ITANIUM
+ *          -  PLATFORM_HARDWARE_POWERPC
+ *          -  PLATFORM_HARDWARE_MIPS
+ *          -  PLATFORM_HARDWARE_MYRIAD2
  *    -  Other:
  *       -  PLATFORM_POSIX_ERROR
  *       -  PLATFORM_POSIX_SUCCESS
@@ -113,193 +123,51 @@
  *    normally defined it as 0 (or just an empty definition like #define
  *    __cplusplus) to signify "not-conforming". When asked for their strictest
  *    conformance, many defined it to 1.  Ancient news!
+ *
+ * To do:
+ *
+ *  -   Memory models such as __LP64__
+ *  -   OSes:
+ *  -       __ros__ (Akaros)
+ *  -       __Fuchsia__ (Fuchsia)
+ *  -   Compilers:
+ *  -       __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__
+ *          PLATFORM_GCC_ONLY (defined __GNUC__ && ! defined __clang__
+ *  -       __clang__, __clang_major__, __clang_minor__, __clang_patchlevel__
+ *  -       _MSC_FULL_VER
+ *
  */
 
 #undef PLATFORM_32_BIT
 #undef PLATFORM_64_BIT
-#undef PLATFORM_CLANG
-#undef PLATFORM_CPP_98
-#undef PLATFORM_CPP_11
-#undef PLATFORM_CPP_14
-#undef PLATFORM_CPP_17
-#undef PLATFORM_CPP_20
-#undef PLATFORM_CPP_26
-#undef PLATFORM_CYGWIN
 #undef PLATFORM_DEBUG
-#undef PLATFORM_FREEBSD
 #undef PLATFORM_GLOB
-#undef PLATFORM_GNU
-#undef PLATFORM_IPHONE_OS
-#undef PLATFORM_LINUX
-#undef PLATFORM_MACOSX
-#undef PLATFORM_MINGW
-#undef PLATFORM_MING_OR_UNIX
-#undef PLATFORM_MING_OR_WINDOWS
-#undef PLATFORM_MSVC
-#undef PLATFORM_POSIX_API
-#undef PLATFORM_POSIX_ERROR
-#undef PLATFORM_POSIX_SUCCESS
 #undef PLATFORM_RELEASE
-#undef PLATFORM_UNIX
-#undef PLATFORM_WIN32_STRICT
-#undef PLATFORM_WINDOWS
-#undef PLATFORM_WINDOWS_32
-#undef PLATFORM_WINDOWS_64
-#undef PLATFORM_WINDOWS_UNICODE
-#undef PLATFORM_XSI
 
 /**
+ *  Provides a PLATFORM_WINDOWS macro plus a few more.
+ *
  *  Provides a "Windows" macro, in case the environment doesn't provide
  *  it.  This macro is defined if not already defined and _WIN32 or WIN32
  *  are encountered.
  */
 
-#if defined Windows                     /* defined by nar-maven-plugin      */
-#define PLATFORM_WINDOWS
-#else
-
-#if defined _WIN32                      /* defined by Microsoft compiler    */
-#define Windows
-#define PLATFORM_WINDOWS
-#define PLATFORM_WINDOWS_32
-#define PLATFORM_32_BIT
-#else
-#if defined WIN32                       /* defined by Mingw compiler        */
-#define Windows
-#define PLATFORM_WINDOWS
-#define PLATFORM_WINDOWS_32
-#define PLATFORM_32_BIT
-#endif
-#endif
-
-#if defined _WIN64                      /* defined by Microsoft compiler    */
-#define Windows
-#define PLATFORM_WINDOWS_64
-#define PLATFORM_WINDOWS
-#define PLATFORM_64_BIT
-#else
-#if defined WIN64                       /* defined by Mingw compiler        */
-#define Windows
-#define PLATFORM_WINDOWS_64
-#define PLATFORM_WINDOWS
-#define PLATFORM_64_BIT
-#endif
-#endif
-
-#endif
+#include "platform_windows.h"
+#include "platform_posix.h"
+#include "platform_compilers.h"
+#include "platform_hardware.h"
 
 /**
- *  Provides macros that mean 32-bit, and only 32-bit Windows.  For
- *  example, in Windows, _WIN32 is defined for both 32- and 64-bit
- *  systems, because Microsoft didn't want to break people's 32-bit code.
- *  So we need a specific macro.
- *
- *      -  PLATFORM_32_BIT is defined on all platforms.
- *      -  WIN32 is defined on Windows platforms.
- *
- *  Prefer the former macro.  The second is defined only for legacy
- *  purposes for Windows builds, and might eventually disappear.
+ *  Set if the platform supports an implementation of glob(3)
  */
 
-#if defined PLATFORM_WINDOWS
-#if defined _WIN32 && ! defined _WIN64
-
-#if ! defined WIN32
-#define WIN32                          /* defined for legacy purposes        */
-#endif
-
-#if ! defined PLATFORM_32_BIT
-#define PLATFORM_32_BIT
-#undef PLATFORM_WINDOWS_64
-#undef PLATFORM_64_BIT
-#endif
-
+#if defined PLATFORM_UNIX || defined PLATFORM_MINGW
+#define PLATFORM_GLOB 1
 #endif
 
 /*
- *  Without this #define, the InitializeCriticalSectionAndSpinCount() function
- *  is undefined.  This version level means "Windows 2000 and higher".
- *  For Windows 10, the value would be 0x0A00.
+ * Tie up some loose ends and define some "universal" macros.
  */
-
-#if ! defined _WIN32_WINNT
-#define _WIN32_WINNT        0x0500
-#endif
-
-#if defined UNICODE || defined _UNICODE
-#define PLATFORM_WINDOWS_UNICODE
-#endif
-
-#endif                                 /* PLATFORM_WINDOWS            */
-
-/**
- *  FreeBSD macros.
- */
-
-#if defined __FreeBSD__
-#define PLATFORM_FREEBSD
-#define PLATFORM_PTHREADS
-#define PLATFORM_UNIX
-#endif
-
-/**
- *  Provides a "Linux" macro, in case the environment doesn't provide it.
- *  This macro is defined if not already defined.
- */
-
-#if defined Linux                      /* defined by nar-maven-plugin       */
-#define PLATFORM_LINUX
-#else
-#if defined __linux__                  /* defined by the GNU compiler       */
-#define Linux
-#define PLATFORM_LINUX
-#endif
-#endif
-
-#if defined PLATFORM_LINUX
-
-#if ! defined POSIX
-#define POSIX                          /* defined for legacy code purposes  */
-#endif
-
-#define PLATFORM_POSIX_API
-#define PLATFORM_PTHREADS
-#define PLATFORM_UNIX
-
-#endif                                 /* PLATFORM_LINUX                    */
-
-/**
- *  Provides a "MacOSX" macro, in case the environment doesn't provide it.
- *  This macro is defined if not already defined and __APPLE__ and
- *  __MACH__ are encountered.
- */
-
-#if defined MacOSX
-#define PLATFORM_MACOSX
-#else
-#if defined __APPLE__ && defined __MACH__    /* defined by Apple compiler   */
-#define PLATFORM_MACOSX
-#define MacOSX
-#endif
-#endif
-
-#if defined PLATFORM_MACOSX
-#define PLATFORM_UNIX
-#endif
-
-/*
- *  To do: detect the iOS platform.
- *
- * #define PLATFORM_IPHONE_OS
- */
-
-#if defined PLATFORM_UNIX
-#define PLATFORM_POSIX_API
-#define PLATFORM_PTHREADS
-#if ! defined POSIX
-#define POSIX                          /* defined for legacy code purposes  */
-#endif
-#endif
 
 /**
  *  Provides macros that mean 64-bit, and only 64-bit.
@@ -310,208 +178,21 @@
  *  Prefer the former macro.  The second is defined only for legacy
  *  purposes for Windows builds, and might eventually disappear.
  *
- */
-
-#if defined PLATFORM_WINDWS
-#if defined _WIN64
-
-#if ! defined WIN64
-#define WIN64
-#endif
-
-#if ! defined PLATFORM_64_BIT
-#define PLATFORM_64_BIT
-#endif
-
-#endif
-#endif                                 /* PLATFORM_WINDOWS            */
-
-/**
- *  Provides macros that mean 64-bit versus 32-bit when gcc or g++ are
- *  used. This can occur on Linux and other systems, and with mingw on
- *  Windows.
+ *  DO THIS 32/64 bit detection after all the other settings.
  *
- *      -  PLATFORM_64_BIT is defined on all platforms.
- *
- *  Prefer the former macro.  The second is defined only for legacy
- *  purposes for Windows builds, and might eventually disappear.
  */
-
-#if defined __GNUC__
-#if defined __x86_64__ || __ppc64__
-
-#if ! defined PLATFORM_64_BIT
-#define PLATFORM_64_BIT
-#endif
-
-#else
-
-#if ! defined PLATFORM_32_BIT
-#define PLATFORM_32_BIT
-#endif
-
-#endif
-#endif
-
-/**
- *  Provides macros that indicate if Microsoft C/C++ versus GNU are being
- *  used.  THe compiler being used normally provides test macros for itself.
- *
- *      -  PLATFORM_ClANG (replaces __clang__)
- *      -  PLATFORM_MSVC (replaces _MSC_VER)
- *      -  PLATFORM_GNU (replaces __GNUC__)
- *      -  PLATFORM_MINGW (replaces __MINGW32__)
- *      -  PLATFORM_MINGW_W32
- *      -  PLATFORM_MINGW_W64
- *      -  PLATFORM_CYGWIN
- */
-
-#if defined __clang__
-#define PLATFORM_CLANG
-#endif
-
-#if defined _MSC_VER
-#define PLATFORM_MSVC
-#define PLATFORM_WINDOWS
-#endif
-
-#if defined __GNUC__
-#define PLATFORM_GNU __GNUC__
-#endif
-
-#if (_POSIX_C_SOURCE >= 200112L) && ! _GNU_SOURCE
-#define PLATFORM_XSI
-
-/*
- * Hit this one compiling in Qt Creator on Linux.
- *
- * #error XSI defined, this is just a test
- */
-
-#endif
-
-/*
- * PLATFORM_WIN32_STRICT replaces checks for WIN32 with CYGWIN not defined.
- */
-
-#if defined __CYGWIN__
-
-#define PLATFORM_CYGWIN
-
-#if defined __CYGWIN32__
-#define PLATFORM_WINDOWS_32
-#elif defined __CYGWIN64__
-#endif
-#define PLATFORM_WINDOWS_64
-
-#else
 
 #if defined PLATFORM_WINDOWS_32
-#define PLATFORM_WIN32_STRICT
+#define PLATFORM_32_BIT 1
 #endif
 
+#if defined PLATFORM_WINDOWS_64
+#define PLATFORM_64_BIT 1
 #endif
 
-#if defined __MINGW32__
-#define PLATFORM_MINGW
-#define PLATFORM_MINGW_W32
-#define PLATFORM_WINDOWS
-#define PLATFORM_WINDOWS_32
-#endif
-
-#if defined __MINGW64__
-#define PLATFORM_MINGW
-#define PLATFORM_MINGW_W64
-#define PLATFORM_WINDOWS
-#define PLATFORM_WINDOWS_64
-#endif
-
-/**
- *  Provides a way to flag unused parameters at each "usage", without disabling
- *  them globally.  Use it like this:
- *
- *     void foo(int UNUSED(bar)) { ... }
- *     static void UNUSED_FUNCTION(foo)(int bar) { ... }
- *
- *  The UNUSED macro won't work for arguments which contain parenthesis,
- *  so an argument like float (*coords)[3] one cannot do,
- *
- *      float UNUSED((*coords)[3]) or float (*UNUSED(coords))[3].
- *
- *  This is the only downside to the UNUSED macro; in these cases fall back to
- *
- *      (void) coords;
- *
- *  Another possible definition is casting the unused value to void in the
- *  function body.
- */
-
-#if defined __GNUC__
-#define UNUSED(x)               UNUSED_ ## x __attribute__((__unused__))
-#else
-#define UNUSED(x)               UNUSED_ ## x
-#endif
-
-#if defined __GNUC__
-#define UNUSED_FUNCTION(x)      __attribute__((__unused__)) UNUSED_ ## x
-#else
-#define UNUSED_FUNCTION(x)      UNUSED_ ## x
-#endif
-
-#define UNUSED_VOID(x)          (void) (x)
-
-/**
- *  Provides macros to indicate the level standards support for some key
- *  cases.  We may have to play with this a bit to get it right.  The main
- *  use-case right now is in avoiding defining the nullptr macro in C++11.
- */
-
-#if defined PLATFORM_MSVC
-
-#if _MSC_VER >= 1700                /* __cplusplus value doesn't work, MS!  */
-#define PLATFORM_CPP_11
-#endif
-
-#endif
-
-#if __cplusplus == 199711L          /* i.e. C++11                           */
-#define PLATFORM_CPP_98
-#endif
-
-#if __cplusplus == 201103L          /* i.e. C++11                           */
-#define PLATFORM_CPP_11
-#endif
-
-#if __cplusplus == 201402L          /* i.e. C++14                           */
-#define PLATFORM_CPP_14
-#endif
-
-#if __cplusplus == 201703L          /* i.e. C++17                           */
-#define PLATFORM_CPP_17
-#endif
-
-#if __cplusplus == 202002L          /* i.e. C++20                           */
-#define PLATFORM_CPP_20
-#endif
-
-#if __cplusplus > 202302L           /* i.e. C++26                           */
-#define PLATFORM_CPP_26
-#endif
-
-/**
- *  Kind of a Windows-with-MingW-matching-Visual-Studio macro.
- */
-
-#if defined PLATFORM_MSVC || defined PLATFORM_MINGW
-#define PLATFORM_MING_OR_WINDOWS
-#endif
-
-/**
- *  A UNIX or MingW macro.
- */
-
-#if defined PLATFORM_UNIX || defined PLATFORM_MINGW
-#define PLATFORM_MING_OR_UNIX
+#if defined PLATFORM_POSIX_API
+#define PLATFORM_PTHREADS 1
+#define POSIX 1                        /* defined for legacy code purposes  */
 #endif
 
 /**
@@ -527,128 +208,12 @@
 #if ! defined PLATFORM_DEBUG
 #if defined DEBUG || defined _DEBUG || defined _DEBUG_ || \
  defined __DEBUG || defined __DEBUG__
-#define PLATFORM_DEBUG
+#define PLATFORM_DEBUG 1
 #endif
 #endif
 
 #if ! defined PLATFORM_DEBUG && ! defined PLATFORM_RELEASE
-#define PLATFORM_RELEASE
-#endif
-
-/**
- *  Provides a check for error return codes from applications.  It is a
- *  non-error value for most POSIX-conformant functions.  This macro defines
- *  the integer value returned by many POSIX functions when they succeed --
- *  zero (0).
- *
- * \note
- *      Rather than testing this value directory, the macro functions
- *      is_posix_success() and not_posix_success() should be used.  See the
- *      descriptions of those macros for more information.
- */
-
-#if ! defined PLATFORM_POSIX_SUCCESS
-#define PLATFORM_POSIX_SUCCESS              0
-#endif
-
-/**
- *  PLATFORM_POSIX_ERROR is returned from a string function when it has
- *  processed an error.  It indicates that an error is in force.  Normally,
- *  the caller then uses this indicator to set a class-based error message.
- *  This macro defines the integer value returned by many POSIX functions when
- *  they fail -- minus one (-1).  The EXIT_FAILURE and
- *  PLATFORM_POSIX_ERROR macros also have the same value.
- *
- * \note
- *      Rather than testing this value directory, the macro functions
- *      is_posix_error() and not_posix_error() should be used.  See the
- *      descriptions of those macros for more information.
- */
-
-#if ! defined PLATFORM_POSIX_ERROR
-#define PLATFORM_POSIX_ERROR              (-1)
-#endif
-
-/**
- *  Set if the platform supports an implementation of glob(3)
- */
-
-#if defined PLATFORM_UNIX || defined PLATFORM_MINGW
-#define PLATFORM_GLOB
-#endif
-
-/**
- *    This macro tests the integer value against PLATFORM_POSIX_SUCCESS.
- *    Other related macros are:
- *
- *       -  is_posix_success()
- *       -  is_posix_error()
- *       -  not_posix_success()
- *       -  not_posix_error()
- *       -  set_posix_success()
- *       -  set_posix_error()
- *
- * \note
- *      -   Some functions return values other than PLATFORM_POSIX_ERROR
- *          when an error occurs.
- *      -   Some functions return values other than
- *          PLATFORM_POSIX_SUCCESS when the function succeeds.
- *      -   Please refer to the online documentation for these quixotic
- *          functions, and decide which macro one want to use for the test, if
- *          any.
- *      -   In some case, one might want to use a clearer test.  For example,
- *          the socket functions return a result that is
- *          PLATFORM_POSIX_ERROR (-1) if the function fails, but
- *          non-zero integer values are returned if the function succeeds.
- *          For these functions, the is_valid_socket() and not_valid_socket()
- *          macros are much more appropriate to use.
- *
- *//*-------------------------------------------------------------------------*/
-
-#if ! defined is_posix_success
-#define is_posix_success(x)      ((x) == PLATFORM_POSIX_SUCCESS)
-#endif
-
-/**
- *  This macro tests the integer value against PLATFORM_POSIX_ERROR (-1).
- */
-
-#if ! defined is_posix_error
-#define is_posix_error(x)        ((x) == PLATFORM_POSIX_ERROR)
-#endif
-
-/**
- *  This macro tests the integer value against PLATFORM_POSIX_SUCCESS (0).
- */
-
-#if ! defined not_posix_success
-#define not_posix_success(x)     ((x) != PLATFORM_POSIX_SUCCESS)
-#endif
-
-/**
- *  This macro tests the integer value against PLATFORM_POSIX_ERROR (-1).
- */
-
-#if ! defined not_posix_error
-#define not_posix_error(x)       ((x) != PLATFORM_POSIX_ERROR)
-#endif
-
-/**
- *  This macro set the integer value to PLATFORM_POSIX_SUCCESS (0).  The
- *  parameter must be an lvalue, as the assignment operator is used.
- */
-
-#if ! defined set_posix_success
-#define set_posix_success(x)     ((x) = PLATFORM_POSIX_SUCCESS)
-#endif
-
-/**
- *  This macro set the integer value to PLATFORM_POSIX_ERROR (-1).  The
- *  parameter must be an lvalue, as the assignment operator is used.
- */
-
-#if ! defined set_posix_error
-#define set_posix_error(x)       ((x) = PLATFORM_POSIX_ERROR)
+#define PLATFORM_RELEASE 1
 #endif
 
 #endif                  /* LIB66_PLATFORM_MACROS_H */
@@ -658,4 +223,3 @@
  *
  * vim: ts=4 sw=4 wm=4 et ft=c
  */
-

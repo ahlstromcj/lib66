@@ -60,6 +60,7 @@ DOCLANG="no"         # --clang. Default is the native compiler.
 DOCLEAN="no"         # --clean
 DOCROSS="no"         # --cross. Build for Windows using a cross-file.
 DODEBUG="no"         # --debug. Build for debuggin in build/debug
+DODETECT="no"        # --detect. Dump the environment for current compiler.
 DODIST="no"          # --dist. Use Meson "dist" to create a package.
 DOGNU="no"           # --gnu. Default is the native compiler.
 DOHELP="no"          # --help. Duh!
@@ -215,6 +216,15 @@ get_options () {
                MAKEFILE="$BUILD_DIR/build.ninja"
                ;;
 
+            --detect)
+               if test "$DOCLANG" = "yes" ; then
+                  clang++ -v -dM -E - < /dev/null
+               else
+                  g++ -v -dM -E - < /dev/null
+               fi
+               exit 0
+               ;;
+
             --release)
                DOMAKE="yes"
                DORELEASE="yes"
@@ -274,6 +284,7 @@ Many of these commands are best used when setting up the build
                      'build/dir'.
  --cross             Set up to build a Windows executable, and build it.
                      Not workable yet; see mingw-qt-build.text.
+ --detect            Dump the compiler environment; put --clang or --gnu first.
  --setup             Run 'meson setup', and that's all.
  --update            Force an update of the subprojects.
  --potext            Build with Potext (light gettext) library sypport.

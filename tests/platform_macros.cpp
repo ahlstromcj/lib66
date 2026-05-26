@@ -22,7 +22,7 @@
  * \library       lib66
  * \author        Chris Ahlstrom
  * \date          2025-01-30
- * \updates       2026-05-25
+ * \updates       2026-05-26
  * \license       See above.
  *
  *      This small program merely shows the PLATFORM_... macros actually
@@ -51,14 +51,20 @@ main (int /*argc*/, char * /*argv*/ [])
 
 #if defined __clang__
     std::cout
-        << "__clang__ (v. " << __clang_major__ << ") defined"
+        << "__clang__ (v. " << __clang_major__
+        << "." << __clang_minor__
+        << "." << __clang_patchlevel__
+        << ")"
         << std::endl
         ;
 #endif
 
 #if defined __GNUC__
     std::cout
-        << "__GNUC__ (v. " << __GNUC__ << ") extensions defined"
+        << "__GNUC__ (v. " << __GNUC__
+        << "." << __GNUC_MINOR__
+        << "." << __GNUC_PATCHLEVEL__
+        << ") extensions"
         << std::endl
         ;
 #endif

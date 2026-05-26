@@ -6,7 +6,7 @@
 # \library     lib66
 # \author      Chris Ahlstrom
 # \date        2025-01-30
-# \updates     2026-05-25
+# \updates     2026-05-26
 # \license     $XPC_SUITE_GPL_LICENSE$
 #
 #  This file is part of the "lib66" library. It was part of the libs66
@@ -98,7 +98,7 @@ project('lib66',
 lib66_pkg_description = 'Common "66" header files.'
 lib66_pkg_version = meson.project_version()
 lib66_api_version = '1.0'
-lib66_info_date = '2026-05-25'
+lib66_info_date = '2026-05-26'
 lib66_info_build_type = get_option('buildtype')
 lib66_info_build_root = meson.project_build_root()
 lib66_info_lib_type = get_option('default_library')
@@ -180,6 +180,14 @@ build_args += [
    '-DLIB66_NAME=' + '"' + meson.project_name() + '"',
    '-DLIB66_VERSION=' + '"' + meson.project_version() + '"'
    ]
+
+# This does not matter when lib66 is used as a sub-project.
+
+'''
+if host_machine.system() == 'cygwin'
+   build_args += [ '-DPLATFORM_CYGWIN=1' ]
+endif
+'''
 
 #-----------------------------------------------------------------------------
 # Set up some "HAVE" macros.  By default the header file is generated in the
@@ -306,9 +314,10 @@ summary(
       'Version' : lib66_pkg_version,
       'Base' : lib66_project_base,
       'Description' : lib66_pkg_description,
-#     'Source Root' : lib66_info_project_root,
+      'Source Root' : lib66_info_project_root,
       'Headers Root' : liblib66_include_top,
       'Sub Dir' : lib66_project_base,
+      'Host OS' : host_machine.system(),
       'Build Type' : lib66_info_build_type,
       'Build Root' : lib66_info_build_root,
       'Library Type' : lib66_info_lib_type,

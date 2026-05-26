@@ -6,7 +6,7 @@
 # \library     lib66
 # \author      Chris Ahlstrom
 # \date        2025-01-30
-# \updates     2025-01-30
+# \updates     2026-05-26
 # \license     $XPC_SUITE_GPL_LICENSE$
 #
 #  This file is part of the "lib66" library. See the top-level meson.build
@@ -19,7 +19,11 @@
 liblib66_headers += files(
    'c_macros.h',
    'cpp_types.hpp',
+   'platform_compilers.h',
+   'platform_hardware.h',
    'platform_macros.h',
+   'platform_posix.h',
+   'platform_windows.h',
    'lib_build_macros.h',
    'lib66.hpp'
    )
