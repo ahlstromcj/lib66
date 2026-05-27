@@ -1,6 +1,6 @@
 Build Directory for the Lib66 library
 Chris Ahlstrom
-2026-05-25 to 2026-05-25
+2026-05-25 to 2026-05-27
 
 Arch Linux:
 
@@ -77,13 +77,13 @@ Windows 11:
 
 Git Bash (^Ms removed):
 
-        lib66-1.0 May 25 2026 compiler & platform settings
+        lib66-1.0 May 27 2026 compiler & platform settings
 
-        __GNUC__ (v. 8) extensions defined
-        __MINGW32__ defined
+        __GNUC__ (v. 8.1.0) extensions defined
+        __MINGW32__ defined [8.1.0]
         __MINGW64__ defined
         _WIN32 defined
-        _WIN32_WINNT defined
+        _WIN32_WINNT = 0x502 (!)
         _WIN64 defined
 
         32-bit platform
@@ -92,8 +92,6 @@ Git Bash (^Ms removed):
         glob(3) supported
         GNU platform
         Mingw platform
-        Ming or UNIX platform
-        Ming or Windows platform
         POSIX error code -1
         POSIX success code 0
         Release build platform
@@ -106,6 +104,8 @@ Git Bash (^Ms removed):
 
     MSYS2: The same except for this line:
 
-        __GNUC__ (v. 14) extensions defined
+        __GNUC__ (v. 14.2.0) extensions defined
+        _WIN32_WINNT = 0x601
+        __MINGW32__ defined [12.0.0.r360.gac299df46-1]
 
 # vim: sw=4 ts=4 wm=8 et ft=sh
