@@ -45,7 +45,7 @@ BASE_BUILD_DIR="build"              # 'lib66/build'
 BUILD_DIR="$BASE_BUILD_DIR/cc"      # "native" compiler (CC/CXX) build
 BUILD_TYPE="release"
 CROSS_PKG_PATH="/usr/lib/pkgconfig" # TO DO TO DO
-EXTRAFLAGS=""
+DEFBUILD=""
 INSTALL_LIBDIR="lib"                # "lib/x86_64-linux-gnu" on Debian
 INSTALL_PREFIX="/usr/local"         # "/usr", what about Windows?
 MAKEFILE="$BUILD_DIR/build.ninja"
@@ -72,7 +72,7 @@ DOPOTEXT="no"        # --potext. Use translation [NOT YET SUPPORTED].
 DORELEASE="yes"      # --release. as opposed to debug; also PDF is made.
 DOREMAKE="no"        # currently UNUSED
 DOSETUP="no"         # --setup. Do the setup and then exit.
-DOSTATIC="yes"       # --static
+DOSTATIC="no"        # --static
 DOUNINSTALL="no"     # --uninstall. Like --install, requires sudo/root.
 DOUPDATE="no"        # --update. Force a subproject update.
 DOVERSION="no"       # --version. Duouble duh!
@@ -237,9 +237,8 @@ get_options () {
                ;;
 
             --static)
-               DORELEASE="yes"
-               DODEBUG="no"
                DOSTATIC="yes"
+               DEFBUILD="-Ddefault_library=static"
                ;;
 
             --version)
@@ -293,6 +292,7 @@ Many of these commands are best used when setting up the build
  --update            Force an update of the subprojects.
  --potext            Build with Potext (light gettext) library sypport.
  --release           Build release version (the default).
+ --static            Force a static build of the library/tests.
  --debug             Build debug version. Always builds in 'build/debug'.
  --install           Run 'meson install' to install Seq66 and the PDF manual.
  --uninstall         Run 'ninja uninstall' to uninstall the library.
@@ -335,7 +335,7 @@ clean_build () {
 
    rm -f doc/dox/*.log
    rm -f doc/latex/*.log
-   echo "Build products removed from the lib66/build sub-directories."
+   echo "Build products removed from the $LIB66/build sub-directories."
 #  rm -rf subprojects/liblib66/
    rm -rf subprojects/potext/          # available, but code not prep'ed
    echo "Subproject downloaded libraries removed from 'subprojects'."
@@ -406,17 +406,25 @@ make_projects () {
    if test "$DOREMAKE" = "yes" ; then
       if test "$NINJA_EXISTS" = "yes" ; then
          echo "$MAKEFILE exists, reconfiguring..."
+         echo "$ meson setup --reconfigure $MOPTS"
          meson setup --reconfigure $MOPTS
       fi
    fi
    if test "$NINJA_EXISTS" = "no" ; then
       echo "New configuration, creating $MAKEFILE, etc...."
       if test "$DODEBUG" = "yes" ; then
-         meson setup --default-library=static $MOPTS
+         echo "$ meson setup -Ddefault_library=static $MOPTS"
+         meson setup -Ddefault_library=static $MOPTS
          echo "... for debugging"
       else
-         meson setup $MOPTS
-         echo "... for release"
+         if test "$DOSTATIC" = "yes" ; then
+            echo "meson setup $DEFBUILD $MOPTS"
+            meson setup $DEFBUILD $MOPTS
+         else
+            echo "meson setup $MOPTS"
+            meson setup $MOPTS
+         fi
+            echo "... for release"
       fi
    fi
 
@@ -454,7 +462,7 @@ install_project () {
    USERID=$(id -u)
    if test "$USERID" = 0 ; then
       cd $BUILD_DIR
-      echo "Installing the lib66 library..."
+      echo "Installing the $LIB66 library..."
       meson install
       cd ..
    else
@@ -559,7 +567,7 @@ MOPTS="--buildtype=$BUILD_TYPE $POTEXTDEF $BUILD_DIR"
 
 if test "$DOSETUP" = "yes"; then
    if test "$DODEBUG" = "yes" ; then
-      meson setup --default-library=static $MOPTS
+      meson setup -Ddefault_library=static $MOPTS
       echo "... for debugging"
    else
       meson setup $MOPTS
