@@ -8,7 +8,7 @@
 # \library        lib66
 # \author         Chris Ahlstrom
 # \date           2025-01-30
-# \update         2026-05-26
+# \update         2026-05-30
 # \version        $Revision$
 # \license        $XPC_SUITE_GPL_LICENSE$
 #
@@ -33,7 +33,7 @@ LANG=C
 export LANG
 CYGWIN=binmode
 export CYGWIN
-export LIB66_SCRIPT_EDIT_DATE="2026-05-26"
+export LIB66_SCRIPT_EDIT_DATE="2026-05-30"
 export LIB66_LIBRARY_API_VERSION="0.1"
 export LIB66_LIBRARY_VERSION="$LIB66_LIBRARY_API_VERSION.0"
 export LIB66="lib66"
@@ -133,8 +133,10 @@ get_options () {
                echo "Using the Clang C/C++ compilers..."
                export CC=clang
                export CXX=clang++
-               BUILD_DIR="$BASE_BUILD_DIR/clang"
-               MAKEFILE="$BUILD_DIR/build.ninja"
+               if test "$DOCROSS" = "no" ; then
+                  BUILD_DIR="$BASE_BUILD_DIR/clang"
+                  MAKEFILE="$BUILD_DIR/build.ninja"
+               fi
                ;;
 
             --gnu | gcc)
@@ -142,8 +144,10 @@ get_options () {
                echo "Using the GNU C/C++ compilers..."
                export CC=gcc
                export CXX=g++
-               BUILD_DIR="$BASE_BUILD_DIR/gcc"
-               MAKEFILE="$BUILD_DIR/build.ninja"
+               if test "$DOCROSS" = "no" ; then
+                  BUILD_DIR="$BASE_BUILD_DIR/gcc"
+                  MAKEFILE="$BUILD_DIR/build.ninja"
+               fi
                ;;
 
             --help)
