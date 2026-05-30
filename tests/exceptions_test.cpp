@@ -22,7 +22,7 @@
  * \library       lib66
  * \author        Chris Ahlstrom
  * \date          2026-03-03
- * \updates       2026-03-03
+ * \updates       2026-05-30
  * \license       See above.
  *
  *      This small program tests the small lib66 exceptions classes.
@@ -163,6 +163,11 @@ main (int /*argc*/, char * /*argv*/ [])
          * ~kruft() does not get called here, so valgrind will detect
          * that eight bytes, allocated in the create_array() calls
          * inf the krufty(bool) constructor, line #110, are lost.
+         *
+         * 2026-05-30. Actually, no bytes are lost. Valgrind reports only
+         *
+         * Conditional jump or move depends on uninitialised value(s)
+         * free() (in /home/me/.../lib66/build/cc/tests/exceptions_test)
          */
 
         rcode = EXIT_FAILURE;
