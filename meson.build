@@ -239,7 +239,7 @@ empty_depends = [ ]
 lib66_library_build = library(
    lib66_project_base,
    liblib66_sources,
-   install : not lib66_subproj,
+   install : true                            # not lib66_subproj,
    install_dir : lib66_libdir,
    cpp_args : build_args,
    dependencies : empty_depends,
