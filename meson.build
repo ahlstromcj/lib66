@@ -100,7 +100,7 @@ project('lib66',
 lib66_pkg_description = 'Common "66" header files.'
 lib66_pkg_version = meson.project_version()
 lib66_api_version = '1.0'
-lib66_info_date = '2026-05-26'
+lib66_info_date = '2026-11-24'
 lib66_info_build_type = get_option('buildtype')
 lib66_info_build_root = meson.project_build_root()
 lib66_info_lib_type = get_option('default_library')
