@@ -6,7 +6,7 @@
 # \library     lib66
 # \author      Chris Ahlstrom
 # \date        2025-01-30
-# \updates     2026-05-26
+# \updates     2026-11-24
 # \license     $XPC_SUITE_GPL_LICENSE$
 #
 #  This file is part of the "lib66" library. It was part of the libs66
@@ -72,6 +72,8 @@
 #  be more that one "test" application.
 #
 #  Also see the spec.bs file in the "extras" directory.
+#
+#     'default_library=static'
 # 
 #-----------------------------------------------------------------------------
 
@@ -82,7 +84,7 @@ project('lib66',
    meson_version : '>=1.4.0',
    default_options : [
       'c_std=c11', 'cpp_std=c++17', 'warning_level=3',
-      'default_library=static'
+      'default_library=both'
       ]
    )
 
@@ -163,6 +165,12 @@ build_args = []
 
 liblib66_includes = include_directories('.', 'include')
 
+'''
+Using this code yields this error when compiling the shared version:
+
+   "relocation R_X86_64_32 against hidden symbol `__TMC_END__' can not be used
+   when making a shared object"
+
 if not lib66_subproj
    add_global_link_arguments(
      '-static-libgcc',
@@ -171,6 +179,7 @@ if not lib66_subproj
      language: 'cpp',
    )
 endif
+'''
 
 #-----------------------------------------------------------------------------
 # Used by the lib66_version() function.
@@ -236,7 +245,7 @@ empty_depends = [ ]
 #
 #-----------------------------------------------------------------------------
 
-lib66_library_build = library(
+lib66_library_build = both_libraries(
    lib66_project_base,
    liblib66_sources,
    install : not lib66_subproj,
