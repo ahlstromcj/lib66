@@ -8,7 +8,7 @@
 # \library        lib66
 # \author         Chris Ahlstrom
 # \date           2025-01-30
-# \update         2026-05-30
+# \update         2026-11-25
 # \version        $Revision$
 # \license        $XPC_SUITE_GPL_LICENSE$
 #
@@ -33,8 +33,8 @@ LANG=C
 export LANG
 CYGWIN=binmode
 export CYGWIN
-export LIB66_SCRIPT_EDIT_DATE="2026-05-30"
-export LIB66_LIBRARY_API_VERSION="0.1"
+export LIB66_SCRIPT_EDIT_DATE="2026-11-25"
+export LIB66_LIBRARY_API_VERSION="1.0"
 export LIB66_LIBRARY_VERSION="$LIB66_LIBRARY_API_VERSION.0"
 export LIB66="lib66"
 export LIB66_LIBRARY="$LIB66-$LIB66_LIBRARY_API_VERSION"
@@ -53,6 +53,7 @@ MAKELOG="make.log"
 PLATFORM="UNIX"
 POTEXTDEF=""
 TAGSTRING="pack"
+WSH="[work]"
 
 # Flags.
 
@@ -113,7 +114,7 @@ get_options () {
                MAKELOG="$BUILD_DIR/make.log"
                CROSSENVSET="PKG_CONFIG_PATH=$CROSS_PKG_PATH:$PKG_CONFIG_PATH"
                export $CROSSENVSET
-               echo "CROSSENVSET: PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
+               echo "$WSH CROSSENVSET: PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
                ;;
 
             --clean)
@@ -130,7 +131,7 @@ get_options () {
 
             --clang)
                DOCLANG="yes"
-               echo "Using the Clang C/C++ compilers..."
+               echo "$WSH Using the Clang C/C++ compilers..."
                export CC=clang
                export CXX=clang++
                if test "$DOCROSS" = "no" ; then
@@ -141,7 +142,7 @@ get_options () {
 
             --gnu | gcc)
                DOGNU="yes"
-               echo "Using the GNU C/C++ compilers..."
+               echo "$WSH Using the GNU C/C++ compilers..."
                export CC=gcc
                export CXX=g++
                if test "$DOCROSS" = "no" ; then
@@ -248,7 +249,7 @@ get_options () {
 
             *)
                if test "$DOPACK" = "no" ; then
-                  echo "? Unsupported work option; --help for more information"
+                  echo "$WSH ? Unsupported work option; --help for more information"
                   exit 1
                else
                   TAGSTRING="$1"
@@ -266,7 +267,7 @@ get_options () {
 #------------------------------------------------------------------------------
 
 show_version () {
-   echo "Cfg66 version $CFG66_LIBRARY_VERSION $CFG66_SCRIPT_EDIT_DATE"
+   echo "$WSH Lib66 version $LIB66_LIBRARY_VERSION $CFG66_SCRIPT_EDIT_DATE"
 }
 
 #******************************************************************************
@@ -329,16 +330,16 @@ E_O_F
 clean_build () {
 
    for DIR in $BASE_BUILD_DIR/*/ ; do
-      echo "Deleting $DIR"
+      echo "$WSH Deleting $DIR"
       rm -rf $DIR
    done
 
    rm -f doc/dox/*.log
    rm -f doc/latex/*.log
-   echo "Build products removed from the $LIB66/build sub-directories."
+   echo "$WSH Build products removed from the $LIB66/build sub-directories."
 #  rm -rf subprojects/liblib66/
    rm -rf subprojects/potext/          # available, but code not prep'ed
-   echo "Subproject downloaded libraries removed from 'subprojects'."
+   echo "$WSH Subproject downloaded libraries removed from 'subprojects'."
 
 #  git checkout data/share/doc/lib66-dev-manual.pdf
 #  echo "Previous version of developer guide restored."
@@ -361,15 +362,15 @@ make_pack () {
       GITBRANCH=""
    fi
 
-   echo "Working directory: $WORKINGDIR"
+   echo "$WSH Working directory: $WORKINGDIR"
    if test "$ISGITBRANCH" = "yes" ; then
          TARBALLNAME="$WORKINGDIR-$GITBRANCH-$CURRENTDATE-$TAGSTRING.tar.xz"
-         echo "Git branch detected."
+         echo "$WSH Git branch detected."
    else
          TARBALLNAME="$WORKINGDIR-$CURRENTDATE-$TAGSTRING.tar.xz"
    fi
 
-   echo "The tar-ball to be generated is '../$TARBALLNAME'"
+   echo "$WSH The tar-ball to be generated is '../$TARBALLNAME'"
 
    cd ..
    if test -d $WORKINGDIR ; then
@@ -388,43 +389,43 @@ make_pack () {
  --exclude="*.xz" \
  --exclude="*.zip" \
  $WORKINGDIR
-      echo "Packed!"
+      echo "$WSH Packed!"
    else
-      echo "? Working directory $WORKINGDIR does not exist."
-      echo "  Are you running pack from the proper directory?"
-      echo "  That is what you must do."
+      echo "$WSH ? Working directory $WORKINGDIR does not exist."
+      echo "$WSH   Are you running pack from the proper directory?"
+      echo "$WSH   That is what you must do."
    fi
    cd $CFG66
 }
 
 make_projects () {
-   echo "Making the $LIB66 library..."
+   echo "$WSH Making the $LIB66 library..."
    NINJA_EXISTS="no"
    if test -f "$MAKEFILE" ; then
       NINJA_EXISTS="yes"
    fi
    if test "$DOREMAKE" = "yes" ; then
       if test "$NINJA_EXISTS" = "yes" ; then
-         echo "$MAKEFILE exists, reconfiguring..."
-         echo "$ meson setup --reconfigure $MOPTS"
+         echo "$WSH $MAKEFILE exists, reconfiguring..."
+         echo "$WSH $ meson setup --reconfigure $MOPTS"
          meson setup --reconfigure $MOPTS
       fi
    fi
    if test "$NINJA_EXISTS" = "no" ; then
-      echo "New configuration, creating $MAKEFILE, etc...."
+      echo "$WSH New configuration, creating $MAKEFILE, etc...."
       if test "$DODEBUG" = "yes" ; then
-         echo "$ meson setup -Ddefault_library=static $MOPTS"
+         echo "$WSH $ meson setup -Ddefault_library=static $MOPTS"
          meson setup -Ddefault_library=static $MOPTS
          echo "... for debugging"
       else
          if test "$DOSTATIC" = "yes" ; then
-            echo "meson setup $DEFBUILD $MOPTS"
+            echo "$WSH meson setup $DEFBUILD $MOPTS"
             meson setup $DEFBUILD $MOPTS
          else
-            echo "meson setup $MOPTS"
+            echo "$WSH meson setup $MOPTS"
             meson setup $MOPTS
          fi
-            echo "... for release"
+            echo "$WSH ... for release"
       fi
    fi
 
@@ -435,15 +436,15 @@ make_projects () {
    ninja -v > $MAKELOG
    if test $? = 0 ; then
       if test "$DODEBUG" = "yes" ; then
-         echo "Debug build in $BUILD_DIR succeeded."
+         echo "$WSH Debug build in $BUILD_DIR succeeded."
       else
-         echo "Release build in $BUILD_DIR succeeded."
+         echo "$WSH Release build in $BUILD_DIR succeeded."
       fi
    else
       if test "$DODEBUG" = "yes" ; then
-         echo "Debug build failed, check $BUILD_DIR/make.log for errors."
+         echo "$WSH Debug build failed, check $BUILD_DIR/make.log for errors."
       else
-         echo "Release build failed, check $BUILD_DIR/make.log for errors."
+         echo "$WSH Release build failed, check $BUILD_DIR/make.log for errors."
       fi
    fi
    cd ..
@@ -462,11 +463,18 @@ install_project () {
    USERID=$(id -u)
    if test "$USERID" = 0 ; then
       cd $BUILD_DIR
-      echo "Installing the $LIB66 library..."
+      echo "$WSH Installing the $LIB66 library..."
       meson install
+      echo
+      echo "$WSH Note: If a program cannot find the '66' shared libraries,"
+      echo "$WSH       run 'sudo ldconfig'. If that does not work, then"
+      echo "$WSH       follow the instructions in 'extras/ld/arch-libs66.conf'."
+      echo
       cd ..
    else
-      echo "UID $USERID. We want you as root to install the $LIB66 library..."
+      echo
+      echo "$WSH UID $USERID. You need root to install the $LIB66 library."
+      echo
    fi
 }
 
@@ -483,7 +491,7 @@ install_project () {
 uninstall_project () {
    USERID=$(id -u)
    if test "$USERID" = 0 ; then
-      echo "Uninstalling the $LIB66 library..."
+      echo "$WSH Uninstalling the $LIB66 library..."
       ninja -C $BUILD_DIR uninstall
       if test "$PLATFORM" = "UNIX" ; then
          rm -rf "$INSTALL_PREFIX/include/$LIB66_LIBRARY"
@@ -492,7 +500,10 @@ uninstall_project () {
 #        rm -rf "$INSTALL_PREFIX/man/man1/$LIB66.1"
       fi
    else
-      echo "UID $USERID. We want you as root to uninstall the $LIB66 library..."
+      echo
+      echo "$WSH UID $USERID. You need root to uninstall the $LIB66 library"
+      echo "$WSH and applications."
+      echo
    fi
 }
 
@@ -523,7 +534,7 @@ if test "$DOHELP" = "yes" ; then
 elif test "$DOOPTHELP" = "yes" ; then
 
 #  cat extras/help/options.help
-   echo "--option-help not yet supported."
+   echo "$WSH --option-help not yet supported."
    exit 0
 
 fi
@@ -568,10 +579,10 @@ MOPTS="--buildtype=$BUILD_TYPE $POTEXTDEF $BUILD_DIR"
 if test "$DOSETUP" = "yes"; then
    if test "$DODEBUG" = "yes" ; then
       meson setup -Ddefault_library=static $MOPTS
-      echo "... for debugging"
+      echo "$WSH ... for debugging"
    else
       meson setup $MOPTS
-      echo "... for release"
+      echo "$WSH ... for release"
    fi
    exit 0
 fi
@@ -593,10 +604,10 @@ if test "$DOCROSS" = "yes" ; then
    if test $? = 0 ; then
       meson compile -C $BUILD_DIR > $MAKELOG
       if test $? = 0 ; then
-         echo "Cross-build in $BUILD_DIR succeeded."
+         echo "$WSH Cross-build in $BUILD_DIR succeeded."
          exit 0
       else
-         echo "Cross-build failed, check $MAKELOG for errors."
+         echo "$WSH Cross-build failed, check $MAKELOG for errors."
          exit 1
       fi
    fi
